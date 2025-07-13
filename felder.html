@@ -73,27 +73,55 @@
       background: #e9f5e9;
       border: 1px solid #c8e6c9;
       border-radius: 8px;
-      font-size: 1.1rem; /* Adjusted font size for better readability */
-      font-weight: normal; /* Adjusted font weight */
-      text-align: right; /* Align text to the right */
-      line-height: 2.0; /* Adjusted line height */
-      white-space: pre-wrap; /* Ensures line breaks are respected */
+      font-size: 1.1rem;
+      text-align: right;
+      line-height: 1.8;
+      display: none; /* Hidden by default */
     }
-    .result h3 {
+    .result-summary {
         text-align: center;
-        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+    .result-summary h3 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+    .result-summary p {
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+    }
+    .result-details h3 {
+        text-align: center;
+        font-size: 1.6rem;
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+    .style-description {
+        background: #fdfdfd;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
         margin-bottom: 1rem;
     }
-    .result p {
+    .style-description h4 {
+        font-size: 1.3rem;
+        color: #0056b3;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+    }
+    .style-description p {
         margin-bottom: 0.5rem;
     }
-    .result strong {
-        font-weight: bold;
+    .style-description ul {
+        padding-right: 20px;
+        margin-top: 0.5rem;
     }
     .result hr {
         border: 0;
         border-top: 1px solid #c8e6c9;
-        margin: 1.5rem 0;
+        margin: 2rem 0;
     }
     button[type="submit"] {
       display: block;
@@ -141,7 +169,7 @@
   </style>
 </head>
 <body>
-  <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
+  <h1>2.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
     <div class="user-info">
       <h2>اطلاعات (اختیاری)</h2>
@@ -167,7 +195,7 @@
     <button type="submit" id="submitBtn">محاسبه سبک یادگیری من</button>
   </form>
   
-  <div id="result" class="result" style="display: none;"></div>
+  <div id="result" class="result"></div>
   <div id="errorMessage" class="error-message"></div>
 
   <div class="back-button" onclick="window.location.href='index.html'">
@@ -222,16 +250,79 @@
         { q: "۴۴) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
     ];
 
-    // *** NEW: Descriptions for each learning style ***
     const learningStyleDescriptions = {
-        'Active': '<strong>فعال (Active):</strong> شما با انجام دادن کارها، مشارکت در بحث و توضیح دادن به دیگران بهتر یاد می‌گیرید. کار گروهی برای شما لذت‌بخش است.',
-        'Reflective': '<strong>تأمل‌گرا (Reflective):</strong> شما ترجیح می‌دهید قبل از هر کاری، درباره‌ی آن فکر کنید. مطالعه‌ی فردی و کار در محیطی آرام به یادگیری شما کمک می‌کند.',
-        'Sensing': '<strong>حسی (Sensing):</strong> شما به واقعیت‌ها، داده‌های ملموس و رویه‌های مشخص علاقه‌مند هستید. در به خاطر سپردن جزئیات مهارت دارید و روش‌های عملی را ترجیح می‌دهید.',
-        'Intuitive': '<strong>شهودی (Intuitive):</strong> شما به مفاهیم، نظریه‌ها و کشف روابط جدید علاقه‌مندید. از کارهای تکراری خسته می‌شوید و ایده‌های نوآورانه را دوست دارید.',
-        'Visual': '<strong>دیداری (Visual):</strong> شما با دیدن تصاویر، نمودارها، دیاگرام‌ها و نمایش‌های بصری بهتر یاد می‌گیرید. حافظه‌ی تصویری خوبی دارید.',
-        'Verbal': '<strong>کلامی (Verbal):</strong> شما از طریق توضیحات نوشتاری و گفتاری بهتر یاد می‌گیرید. خواندن، نوشتن و بحث کردن به فرآیند یادگیری شما کمک می‌کند.',
-        'Sequential': '<strong>توالی‌گرا (Sequential):</strong> شما اطلاعات را به صورت مرحله به مرحله و منظم دنبال می‌کنید. با دنبال کردن یک مسیر منطقی، به درک عمیقی از موضوع می‌رسید.',
-        'Global': '<strong>کلی‌نگر (Global):</strong> شما نیاز دارید ابتدا تصویر کلی و هدف نهایی را درک کنید. شما به صورت جهشی و با درک ناگهانی مطلب را یاد می‌گیرید و سپس به جزئیات می‌پردازید.'
+        'Active': {
+            title: 'فعال (Active)',
+            description: 'شما از طریق «انجام دادن»، مشارکت فعال در بحث‌ها و به‌کارگیری مفاهیم، بهترین یادگیری را تجربه می‌کنید.',
+            strategies: [
+                'در گروه‌های مطالعه شرکت کنید و مفاهیم را برای دیگران توضیح دهید.',
+                'برای هر موضوع، مثال‌های عملی و کاربردی پیدا کنید.',
+                'هنگام مطالعه، به جای نشستن طولانی، در فواصل کوتاه فعالیت فیزیکی داشته باشید.'
+            ]
+        },
+        'Reflective': {
+            title: 'تأمل‌گرا (Reflective)',
+            description: 'شما ترجیح می‌دهید ابتدا اطلاعات را در ذهن خود پردازش کرده و درباره‌ی آن عمیقاً فکر کنید.',
+            strategies: [
+                'پس از هر کلاس یا جلسه مطالعه، زمانی را به مرور و فکر کردن به مطالب اختصاص دهید.',
+                'خلاصه‌نویسی از آموخته‌هایتان به درک عمیق‌تر کمک می‌کند.',
+                'قبل از شروع حل مسئله، تمام جوانب آن را با دقت بررسی کنید.'
+            ]
+        },
+        'Sensing': {
+            title: 'حسی (Sensing)',
+            description: 'شما به اطلاعات ملموس، واقعیت‌ها و رویه‌های اثبات‌شده علاقه‌مند هستید و به جزئیات توجه زیادی دارید.',
+            strategies: [
+                'از استاد یا منابع درسی، مثال‌های واقعی و کاربردی درخواست کنید.',
+                'مفاهیم درسی را به تجربیات عملی خود مرتبط سازید.',
+                'در کارهای آزمایشگاهی و عملی مهارت بالایی دارید؛ از این فرصت‌ها استفاده کنید.'
+            ]
+        },
+        'Intuitive': {
+            title: 'شهودی (Intuitive)',
+            description: 'شما به کشف روابط، ایده‌های نو و مفاهیم انتزاعی علاقه‌مندید و از کارهای تکراری و حفظ‌کردنی بیزارید.',
+            strategies: [
+                'به دنبال درک تصویر کلی و ارتباط بین مفاهیم مختلف باشید.',
+                'از منابعی استفاده کنید که نظریه‌ها و ایده‌های اصلی را توضیح می‌دهند.',
+                'مراقب باشید که در آزمون‌ها به دلیل بی‌توجهی به جزئیات، امتیاز از دست ندهید.'
+            ]
+        },
+        'Visual': {
+            title: 'دیداری (Visual)',
+            description: 'شما اطلاعاتی را که به صورت بصری ارائه می‌شوند (مانند نمودار، دیاگرام و تصویر) بهتر به خاطر می‌سپارید.',
+            strategies: [
+                'اطلاعات متنی را به صورت نقشه‌های ذهنی (Mind Map)، فلوچارت و جدول تبدیل کنید.',
+                'از رنگ‌های مختلف برای هایلایت کردن و دسته‌بندی مطالب استفاده کنید.',
+                'ویدیوهای آموزشی و منابع تصویری را جایگزین منابع صرفاً متنی کنید.'
+            ]
+        },
+        'Verbal': {
+            title: 'کلامی (Verbal)',
+            description: 'شما از طریق خواندن، نوشتن و توضیحات گفتاری (شنیداری و بیانی) بهترین یادگیری را دارید.',
+            strategies: [
+                'مطالب را با صدای بلند برای خود یا دیگران تکرار کنید.',
+                'در بحث‌های کلاسی و گروه‌های مطالعه فعالانه شرکت کنید.',
+                'خلاصه‌نویسی و بازنویسی مفاهیم با کلمات خودتان بسیار مؤثر است.'
+            ]
+        },
+        'Sequential': {
+            title: 'توالی‌گرا (Sequential)',
+            description: 'شما اطلاعات را به صورت مرحله به مرحله و در یک توالی منطقی و منظم بهتر درک می‌کنید.',
+            strategies: [
+                'برای مطالب درسی، یک طرح کلی و فهرست‌وار (Outline) تهیه کنید.',
+                'مطمئن شوید که هر مرحله را به خوبی یاد گرفته‌اید و سپس به مرحله بعد بروید.',
+                'از معلم بخواهید که ارتباط منطقی بین بخش‌های مختلف درس را توضیح دهد.'
+            ]
+        },
+        'Global': {
+            title: 'کلی‌نگر (Global)',
+            description: 'شما نیاز دارید ابتدا تصویر کلی و هدف نهایی را ببینید. یادگیری شما اغلب به صورت جهشی و ناگهانی اتفاق می‌افتد.',
+            strategies: [
+                'قبل از خواندن دقیق یک فصل، آن را به سرعت ورق بزنید تا یک دید کلی به دست آورید.',
+                'سعی کنید مطالب جدید را به موضوعاتی که از قبل می‌دانید، مرتبط سازید.',
+                'اگر در ابتدا احساس سردرگمی کردید، نگران نشوید. به زودی تصویر کلی برایتان روشن خواهد شد.'
+            ]
+        }
     };
 
     const container = document.getElementById("questions");
@@ -293,12 +384,27 @@
         Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
       };
       
-      // *** NEW: Generate descriptions based on scores ***
-      let descriptionsHtml = '<h3>توضیحات سبک یادگیری شما</h3>';
-      descriptionsHtml += `<p>${scores["ACT-REF"] >= 0 ? learningStyleDescriptions.Active : learningStyleDescriptions.Reflective}</p>`;
-      descriptionsHtml += `<p>${scores["SEN-INT"] >= 0 ? learningStyleDescriptions.Sensing : learningStyleDescriptions.Intuitive}</p>`;
-      descriptionsHtml += `<p>${scores["VIS-VRB"] >= 0 ? learningStyleDescriptions.Visual : learningStyleDescriptions.Verbal}</p>`;
-      descriptionsHtml += `<p>${scores["SEQ-GLO"] >= 0 ? learningStyleDescriptions.Sequential : learningStyleDescriptions.Global}</p>`;
+      const getStyleDescription = (score, styleA, styleB) => {
+        const styleData = score >= 0 ? learningStyleDescriptions[styleA] : learningStyleDescriptions[styleB];
+        let strategiesHtml = '<ul>';
+        styleData.strategies.forEach(s => { strategiesHtml += `<li>${s}</li>`; });
+        strategiesHtml += '</ul>';
+        return `
+            <div class="style-description">
+                <h4>${styleData.title}</h4>
+                <p>${styleData.description}</p>
+                <p><strong>راهبردهای مطالعه پیشنهادی:</strong></p>
+                ${strategiesHtml}
+            </div>
+        `;
+      };
+      
+      let descriptionsHtml = '<div class="result-details"><h3>توضیحات سبک یادگیری شما</h3>';
+      descriptionsHtml += getStyleDescription(scores["ACT-REF"], 'Active', 'Reflective');
+      descriptionsHtml += getStyleDescription(scores["SEN-INT"], 'Sensing', 'Intuitive');
+      descriptionsHtml += getStyleDescription(scores["VIS-VRB"], 'Visual', 'Verbal');
+      descriptionsHtml += getStyleDescription(scores["SEQ-GLO"], 'Sequential', 'Global');
+      descriptionsHtml += '</div>';
 
       const dataToSend = { ...userInfo, ...individualAnswers, ...finalResults };
 
@@ -309,14 +415,15 @@
         body: JSON.stringify(dataToSend)
       }).then(() => {
         const resultSummary = `
-          <h3>نتایج آزمون</h3>
-          <p><strong>فعالیت:</strong> ${finalResults.Result_ACT_REF}</p>
-          <p><strong>دریافت اطلاعات:</strong> ${finalResults.Result_SEN_INT}</p>
-          <p><strong>شیوه ارائه اطلاعات:</strong> ${finalResults.Result_VIS_VRB}</p>
-          <p><strong>پردازش اطلاعات:</strong> ${finalResults.Result_SEQ_GLO}</p>
+          <div class="result-summary">
+            <h3>نتایج آزمون</h3>
+            <p><strong>بعد پردازش (چگونه اطلاعات را پردازش می‌کنید):</strong> ${finalResults.Result_ACT_REF}</p>
+            <p><strong>بعد دریافت (چه نوع اطلاعاتی را ترجیح می‌دهید):</strong> ${finalResults.Result_SEN_INT}</p>
+            <p><strong>بعد ورودی (بهترین کانال دریافت اطلاعات):</strong> ${finalResults.Result_VIS_VRB}</p>
+            <p><strong>بعد فهم (چگونه اطلاعات را به درک تبدیل می‌کنید):</strong> ${finalResults.Result_SEQ_GLO}</p>
+          </div>
         `;
         
-        // Combine summary and descriptions
         resultDiv.innerHTML = resultSummary + '<hr>' + descriptionsHtml;
         resultDiv.style.display = 'block';
         submitBtn.innerText = 'ارسال انجام شد';
