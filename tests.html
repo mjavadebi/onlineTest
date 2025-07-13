@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Select a Test</title>
+  <title>انتخاب آزمون</title>
   <style>
+    /* Import Vazirmatn font */
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Vazirmatn', Arial, sans-serif;
       background: #f4f4f4;
       padding: 2rem;
       max-width: 700px;
       margin: auto;
+      direction: rtl;
     }
     h1 {
       text-align: center;
       margin-bottom: 2rem;
+      color: #333;
     }
     .test-list {
       display: flex;
@@ -31,6 +36,7 @@
       font-size: 1.2rem;
       text-align: center;
       transition: background-color 0.3s ease;
+      font-family: 'Vazirmatn', sans-serif;
     }
     a:hover {
       background-color: #0056b3;
@@ -41,17 +47,17 @@
       color: #007bff;
       cursor: pointer;
       text-decoration: underline;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
-  <h1>Select a Test to Take</h1>
+  <h1>یک آزمون را برای شرکت انتخاب کنید</h1>
   <div class="test-list">
-    <a href="felder.html">Felder-Silverman Learning Style Test</a>
-    <a href="https://openpsychometrics.org/tests/OEJTS/1.php" target="_blank" rel="noopener noreferrer">MBTI Test (external)</a>
-    <!-- Add more test links here if you want -->
-  </div>
+    <a href="felder-farsi.html">آزمون سبک یادگیری فلدر-سیلورمن</a>
+    <a href="https://openpsychometrics.org/tests/OEJTS/1.php" target="_blank" rel="noopener noreferrer">آزمون MBTI (لینک خارجی)</a>
+    </div>
 
-  <div class="back" onclick="window.location.href='index.html'">← Back to Main Page</div>
+  <div class="back" onclick="window.location.href='index.html'">→ بازگشت به صفحه اصلی</div>
 </body>
 </html>
