@@ -406,8 +406,8 @@
       descriptionsHtml += getStyleDescription(scores["SEQ-GLO"], 'Sequential', 'Global');
       descriptionsHtml += '</div>';
 
-      // *** MODIFICATION: Add a timestamp to the data sent to Google Sheets ***
-      const timestamp = new Date().toLocaleString('fa-IR');
+      // *** MODIFICATION: Changed timestamp to 'en-US' locale ***
+      const timestamp = new Date().toLocaleString('en-US');
       const dataToSend = { 
         Timestamp: timestamp,
         ...userInfo, 
