@@ -104,7 +104,7 @@
   </style>
 </head>
 <body>
-  <h1> 3.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
+  <h1> 4.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
     <div class="user-info">
       <h2>اطلاعات (اختیاری)</h2>
@@ -198,74 +198,69 @@
     });
 
     const form = document.getElementById("quizForm");
-    form.onsubmit = function(e) {
-      e.preventDefault();
+form.onsubmit = function(e) {
+  e.preventDefault();
 
-      // --- CAPTURE USER INFO ---
-      const userInfo = {
-          Name: document.getElementById('name').value,
-          Age: document.getElementById('age').value,
-          PhoneNumber: document.getElementById('phoneNumber').value,
-          StudentID: document.getElementById('studentId').value,
-      };
-      
-      const individualAnswers = {};
-      const scores = {
-        "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0
-      };
+  const userInfo = {
+    Name: document.getElementById('name').value,
+    Age: document.getElementById('age').value,
+    PhoneNumber: document.getElementById('phoneNumber').value,
+    StudentID: document.getElementById('studentId').value,
+  };
 
-      questions.forEach((q, i) => {
-        const val = document.querySelector(`input[name='q${i}']:checked`).value;
-        scores[q.dim] += (val === 'a' ? 1 : -1);
-        
-        const questionKey = `Q${i + 1}-${q.dim}`;
-        individualAnswers[questionKey] = val;
-      });
+  const individualAnswers = {};
+  const scores = {
+    "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0
+  };
 
-      const calculateStyleAndPercentage = (score, styleA, styleB) => {
-          const totalQuestionsPerDimension = 11;
-          if (score === 0) return "متعادل (Balanced)";
-          const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
-          const dominantStyle = score > 0 ? styleA : styleB;
-          return `${dominantStyle} (${percentage}%)`;
-      };
-      
-      const finalResults = {
-        Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأملی (Reflective)"),
-        Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
-        Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
-        Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "متوالی (Sequential)", "کلی (Global)")
-      };
+  questions.forEach((q, i) => {
+    const val = document.querySelector(`input[name='q${i}']:checked`).value;
+    scores[q.dim] += (val === 'a' ? 1 : -1);
+    const questionKey = `Q${i + 1}-${q.dim}`;
+    individualAnswers[questionKey] = val;
+  });
 
-      const resultText = `
-        <strong>سبک یادگیری شما:</strong>
-        <br>فعال / تأملی: <strong>${finalResults.Result_ACT_REF}</strong>
-        <br>حسی / شهودی: <strong>${finalResults.Result_SEN_INT}</strong>
-        <br>دیداری / کلامی: <strong>${finalResults.Result_VIS_VRB}</strong>
-        <br>متوالی / کلی: <strong>${finalResults.Result_SEQ_GLO}</strong>
-      `;
-      document.getElementById("result").innerHTML = resultText;
-      
-      const timestamp = new Date().toISOString();
-      const dataToSubmit = { 
-          Timestamp: timestamp, 
-          ...userInfo,
-          ...individualAnswers, 
-          ...finalResults 
-      };
+  const calculateStyleAndPercentage = (score, styleA, styleB) => {
+    const totalQuestionsPerDimension = 11;
+    if (score === 0) return "متعادل (Balanced)";
+    const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
+    const dominantStyle = score > 0 ? styleA : styleB;
+    return `${dominantStyle} (${percentage}%)`;
+  };
 
-      fetch("https://script.google.com/macros/s/AKfycbzgAvoF7baR3rZEtJuRmBQVcEQ0QhBscNxCbbicuvJkJHaJU5WvcPIo-lE88khg2y1ugw/exec", {
-        method: "POST",
-        // The "mode: 'no-cors'" line has been REMOVED. This is the fix.
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSubmit),
-      })
-      .then(response => response.text())
-      .then(data => console.log(data)) // Optional: logs "Success" or the error from the script
-      .catch(error => console.error('Error:', error));
-    };
+  const finalResults = {
+    Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأمل‌گرا (Reflective)"),
+    Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
+    Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
+    Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
+  };
+
+  const dataToSend = {
+    ...userInfo,
+    ...individualAnswers,
+    ...finalResults
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
+    method: "POST",
+    mode: "no-cors", // optional: prevents CORS error
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dataToSend)
+  }).then(() => {
+    document.getElementById("result").innerText = 
+      `سبک یادگیری شما:\n
+      فعالیت: ${finalResults.Result_ACT_REF}\n
+      دریافت اطلاعات: ${finalResults.Result_SEN_INT}\n
+      شیوه ارائه اطلاعات: ${finalResults.Result_VIS_VRB}\n
+      پردازش اطلاعات: ${finalResults.Result_SEQ_GLO}`;
+  }).catch(err => {
+    alert("خطایی در ارسال اطلاعات به Google Sheet رخ داد.");
+    console.error(err);
+  });
+};
+
   </script>
 </body>
 </html>
