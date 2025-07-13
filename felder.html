@@ -18,46 +18,51 @@
       text-align: center;
     }
     .user-info {
-        background: white;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        border-radius: 8px;
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .user-info h2 {
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-        font-size: 1.5rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
     }
     .form-group {
-        margin-bottom: 1rem;
+      margin-bottom: 1rem;
     }
     .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
     }
     .form-group input {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box; /* Important for padding and width */
-        font-family: 'Vazirmatn', sans-serif;
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box; /* Important for padding and width */
+      font-family: 'Vazirmatn', sans-serif;
     }
     .question {
       background: white;
       padding: 1.5rem;
       margin-bottom: 1rem;
       border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .question h3 {
       margin-bottom: 1rem;
       text-align: right;
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
     .options label {
       display: block;
       margin-bottom: 0.5rem;
       text-align: right;
+      cursor: pointer;
     }
     .options input {
       margin-left: 0.5rem;
@@ -72,6 +77,7 @@
       font-weight: bold;
       text-align: center;
       line-height: 2.2;
+      white-space: pre-wrap; /* Ensures line breaks are respected */
     }
     button[type="submit"] {
       display: block;
@@ -84,9 +90,14 @@
       border: none;
       border-radius: 5px;
       font-family: 'Vazirmatn', sans-serif;
+      transition: background-color 0.3s;
     }
-    button[type="submit"]:hover {
-        background-color: #0056b3;
+    button[type="submit"]:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+    button[type="submit"]:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
     }
     .back-button {
       display: block;
@@ -100,6 +111,17 @@
     }
     .back-button:hover {
       color: #0056b3;
+    }
+    /* New style for error message */
+    .error-message {
+        color: #D8000C;
+        background-color: #FFD2D2;
+        border: 1px solid #D8000C;
+        border-radius: 5px;
+        padding: 1rem;
+        margin: 1rem auto;
+        text-align: center;
+        display: none; /* Hidden by default */
     }
   </style>
 </head>
@@ -127,9 +149,14 @@
     </div>
     
     <div id="questions"></div>
-    <button type="submit">محاسبه سبک یادگیری من</button>
+    <!-- Added an ID to the button to easily select it in JavaScript -->
+    <button type="submit" id="submitBtn">محاسبه سبک یادگیری من</button>
   </form>
-  <div id="result" class="result"></div>
+  
+  <!-- Container for the result -->
+  <div id="result" class="result" style="display: none;"></div>
+  <!-- Container for error messages -->
+  <div id="errorMessage" class="error-message"></div>
 
   <div class="back-button" onclick="window.location.href='index.html'">
     → بازگشت به صفحه اصلی
@@ -198,69 +225,91 @@
     });
 
     const form = document.getElementById("quizForm");
-form.onsubmit = function(e) {
-  e.preventDefault();
+    // *** MODIFICATION START ***
+    // Get references to the button and message elements
+    const submitBtn = document.getElementById('submitBtn');
+    const resultDiv = document.getElementById('result');
+    const errorDiv = document.getElementById('errorMessage');
 
-  const userInfo = {
-    Name: document.getElementById('name').value,
-    Age: document.getElementById('age').value,
-    PhoneNumber: document.getElementById('phoneNumber').value,
-    StudentID: document.getElementById('studentId').value,
-  };
+    form.onsubmit = function(e) {
+      e.preventDefault();
 
-  const individualAnswers = {};
-  const scores = {
-    "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0
-  };
+      // Disable the button and change its text to give feedback to the user
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'در حال ارسال...';
+      // Hide previous results and errors
+      resultDiv.style.display = 'none';
+      errorDiv.style.display = 'none';
 
-  questions.forEach((q, i) => {
-    const val = document.querySelector(`input[name='q${i}']:checked`).value;
-    scores[q.dim] += (val === 'a' ? 1 : -1);
-    const questionKey = `Q${i + 1}-${q.dim}`;
-    individualAnswers[questionKey] = val;
-  });
+      const userInfo = {
+        Name: document.getElementById('name').value,
+        Age: document.getElementById('age').value,
+        PhoneNumber: document.getElementById('phoneNumber').value,
+        StudentID: document.getElementById('studentId').value,
+      };
 
-  const calculateStyleAndPercentage = (score, styleA, styleB) => {
-    const totalQuestionsPerDimension = 11;
-    if (score === 0) return "متعادل (Balanced)";
-    const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
-    const dominantStyle = score > 0 ? styleA : styleB;
-    return `${dominantStyle} (${percentage}%)`;
-  };
+      const individualAnswers = {};
+      const scores = {
+        "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0
+      };
 
-  const finalResults = {
-    Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأمل‌گرا (Reflective)"),
-    Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
-    Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
-    Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
-  };
+      questions.forEach((q, i) => {
+        const val = document.querySelector(`input[name='q${i}']:checked`).value;
+        scores[q.dim] += (val === 'a' ? 1 : -1);
+        const questionKey = `Q${i + 1}-${q.dim}`;
+        individualAnswers[questionKey] = val;
+      });
 
-  const dataToSend = {
-    ...userInfo,
-    ...individualAnswers,
-    ...finalResults
-  };
+      const calculateStyleAndPercentage = (score, styleA, styleB) => {
+        const totalQuestionsPerDimension = 11;
+        if (score === 0) return "متعادل (Balanced)";
+        const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
+        const dominantStyle = score > 0 ? styleA : styleB;
+        return `${dominantStyle} (${percentage}%)`;
+      };
 
-  fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
-    method: "POST",
-    mode: "no-cors", // optional: prevents CORS error
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dataToSend)
-  }).then(() => {
-    document.getElementById("result").innerText = 
-      `سبک یادگیری شما:\n
-      فعالیت: ${finalResults.Result_ACT_REF}\n
-      دریافت اطلاعات: ${finalResults.Result_SEN_INT}\n
-      شیوه ارائه اطلاعات: ${finalResults.Result_VIS_VRB}\n
-      پردازش اطلاعات: ${finalResults.Result_SEQ_GLO}`;
-  }).catch(err => {
-    alert("خطایی در ارسال اطلاعات به Google Sheet رخ داد.");
-    console.error(err);
-  });
-};
+      const finalResults = {
+        Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأمل‌گرا (Reflective)"),
+        Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
+        Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
+        Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
+      };
 
+      const dataToSend = {
+        ...userInfo,
+        ...individualAnswers,
+        ...finalResults
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
+        method: "POST",
+        mode: "no-cors", // Note: 'no-cors' mode prevents reading the response, but submission should still work.
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToSend)
+      }).then(() => {
+        // Display the results
+        resultDiv.innerText =  
+          `سبک یادگیری شما:\n
+           فعالیت: ${finalResults.Result_ACT_REF}\n
+           دریافت اطلاعات: ${finalResults.Result_SEN_INT}\n
+           شیوه ارائه اطلاعات: ${finalResults.Result_VIS_VRB}\n
+           پردازش اطلاعات: ${finalResults.Result_SEQ_GLO}`;
+        resultDiv.style.display = 'block';
+        // The button remains disabled on success to prevent resubmission.
+        // If you want to allow a new submission, you can reset the form and re-enable the button here.
+      }).catch(err => {
+        // Display an error message on the page instead of an alert
+        errorDiv.innerText = "خطایی در ارسال اطلاعات به Google Sheet رخ داد. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.";
+        errorDiv.style.display = 'block';
+        console.error(err);
+        // Re-enable the button ONLY if an error occurs
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'محاسبه سبک یادگیری من';
+      });
+    };
+    // *** MODIFICATION END ***
   </script>
 </body>
 </html>
