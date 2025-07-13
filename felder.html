@@ -73,11 +73,27 @@
       background: #e9f5e9;
       border: 1px solid #c8e6c9;
       border-radius: 8px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      text-align: center;
-      line-height: 2.2;
+      font-size: 1.1rem; /* Adjusted font size for better readability */
+      font-weight: normal; /* Adjusted font weight */
+      text-align: right; /* Align text to the right */
+      line-height: 2.0; /* Adjusted line height */
       white-space: pre-wrap; /* Ensures line breaks are respected */
+    }
+    .result h3 {
+        text-align: center;
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
+    .result p {
+        margin-bottom: 0.5rem;
+    }
+    .result strong {
+        font-weight: bold;
+    }
+    .result hr {
+        border: 0;
+        border-top: 1px solid #c8e6c9;
+        margin: 1.5rem 0;
     }
     button[type="submit"] {
       display: block;
@@ -112,7 +128,6 @@
     .back-button:hover {
       color: #0056b3;
     }
-    /* New style for error message */
     .error-message {
         color: #D8000C;
         background-color: #FFD2D2;
@@ -126,7 +141,7 @@
   </style>
 </head>
 <body>
-  <h1>2.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
+  <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
     <div class="user-info">
       <h2>اطلاعات (اختیاری)</h2>
@@ -149,13 +164,10 @@
     </div>
     
     <div id="questions"></div>
-    <!-- Added an ID to the button to easily select it in JavaScript -->
     <button type="submit" id="submitBtn">محاسبه سبک یادگیری من</button>
   </form>
   
-  <!-- Container for the result -->
   <div id="result" class="result" style="display: none;"></div>
-  <!-- Container for error messages -->
   <div id="errorMessage" class="error-message"></div>
 
   <div class="back-button" onclick="window.location.href='index.html'">
@@ -210,6 +222,18 @@
         { q: "۴۴) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
     ];
 
+    // *** NEW: Descriptions for each learning style ***
+    const learningStyleDescriptions = {
+        'Active': '<strong>فعال (Active):</strong> شما با انجام دادن کارها، مشارکت در بحث و توضیح دادن به دیگران بهتر یاد می‌گیرید. کار گروهی برای شما لذت‌بخش است.',
+        'Reflective': '<strong>تأمل‌گرا (Reflective):</strong> شما ترجیح می‌دهید قبل از هر کاری، درباره‌ی آن فکر کنید. مطالعه‌ی فردی و کار در محیطی آرام به یادگیری شما کمک می‌کند.',
+        'Sensing': '<strong>حسی (Sensing):</strong> شما به واقعیت‌ها، داده‌های ملموس و رویه‌های مشخص علاقه‌مند هستید. در به خاطر سپردن جزئیات مهارت دارید و روش‌های عملی را ترجیح می‌دهید.',
+        'Intuitive': '<strong>شهودی (Intuitive):</strong> شما به مفاهیم، نظریه‌ها و کشف روابط جدید علاقه‌مندید. از کارهای تکراری خسته می‌شوید و ایده‌های نوآورانه را دوست دارید.',
+        'Visual': '<strong>دیداری (Visual):</strong> شما با دیدن تصاویر، نمودارها، دیاگرام‌ها و نمایش‌های بصری بهتر یاد می‌گیرید. حافظه‌ی تصویری خوبی دارید.',
+        'Verbal': '<strong>کلامی (Verbal):</strong> شما از طریق توضیحات نوشتاری و گفتاری بهتر یاد می‌گیرید. خواندن، نوشتن و بحث کردن به فرآیند یادگیری شما کمک می‌کند.',
+        'Sequential': '<strong>توالی‌گرا (Sequential):</strong> شما اطلاعات را به صورت مرحله به مرحله و منظم دنبال می‌کنید. با دنبال کردن یک مسیر منطقی، به درک عمیقی از موضوع می‌رسید.',
+        'Global': '<strong>کلی‌نگر (Global):</strong> شما نیاز دارید ابتدا تصویر کلی و هدف نهایی را درک کنید. شما به صورت جهشی و با درک ناگهانی مطلب را یاد می‌گیرید و سپس به جزئیات می‌پردازید.'
+    };
+
     const container = document.getElementById("questions");
     questions.forEach((q, i) => {
       const div = document.createElement("div");
@@ -225,8 +249,6 @@
     });
 
     const form = document.getElementById("quizForm");
-    // *** MODIFICATION START ***
-    // Get references to the button and message elements
     const submitBtn = document.getElementById('submitBtn');
     const resultDiv = document.getElementById('result');
     const errorDiv = document.getElementById('errorMessage');
@@ -234,10 +256,8 @@
     form.onsubmit = function(e) {
       e.preventDefault();
 
-      // Disable the button and change its text to give feedback to the user
       submitBtn.disabled = true;
       submitBtn.innerText = 'در حال ارسال...';
-      // Hide previous results and errors
       resultDiv.style.display = 'none';
       errorDiv.style.display = 'none';
 
@@ -248,11 +268,9 @@
         StudentID: document.getElementById('studentId').value,
       };
 
+      const scores = { "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0 };
       const individualAnswers = {};
-      const scores = {
-        "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0
-      };
-
+      
       questions.forEach((q, i) => {
         const val = document.querySelector(`input[name='q${i}']:checked`).value;
         scores[q.dim] += (val === 'a' ? 1 : -1);
@@ -274,42 +292,43 @@
         Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
         Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
       };
+      
+      // *** NEW: Generate descriptions based on scores ***
+      let descriptionsHtml = '<h3>توضیحات سبک یادگیری شما</h3>';
+      descriptionsHtml += `<p>${scores["ACT-REF"] >= 0 ? learningStyleDescriptions.Active : learningStyleDescriptions.Reflective}</p>`;
+      descriptionsHtml += `<p>${scores["SEN-INT"] >= 0 ? learningStyleDescriptions.Sensing : learningStyleDescriptions.Intuitive}</p>`;
+      descriptionsHtml += `<p>${scores["VIS-VRB"] >= 0 ? learningStyleDescriptions.Visual : learningStyleDescriptions.Verbal}</p>`;
+      descriptionsHtml += `<p>${scores["SEQ-GLO"] >= 0 ? learningStyleDescriptions.Sequential : learningStyleDescriptions.Global}</p>`;
 
-      const dataToSend = {
-        ...userInfo,
-        ...individualAnswers,
-        ...finalResults
-      };
+      const dataToSend = { ...userInfo, ...individualAnswers, ...finalResults };
 
       fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
         method: "POST",
-        mode: "no-cors", // Note: 'no-cors' mode prevents reading the response, but submission should still work.
-        headers: {
-          "Content-Type": "application/json"
-        },
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend)
       }).then(() => {
-        // Display the results
-        resultDiv.innerText =  
-          `سبک یادگیری شما:\n
-           فعالیت: ${finalResults.Result_ACT_REF}\n
-           دریافت اطلاعات: ${finalResults.Result_SEN_INT}\n
-           شیوه ارائه اطلاعات: ${finalResults.Result_VIS_VRB}\n
-           پردازش اطلاعات: ${finalResults.Result_SEQ_GLO}`;
+        const resultSummary = `
+          <h3>نتایج آزمون</h3>
+          <p><strong>فعالیت:</strong> ${finalResults.Result_ACT_REF}</p>
+          <p><strong>دریافت اطلاعات:</strong> ${finalResults.Result_SEN_INT}</p>
+          <p><strong>شیوه ارائه اطلاعات:</strong> ${finalResults.Result_VIS_VRB}</p>
+          <p><strong>پردازش اطلاعات:</strong> ${finalResults.Result_SEQ_GLO}</p>
+        `;
+        
+        // Combine summary and descriptions
+        resultDiv.innerHTML = resultSummary + '<hr>' + descriptionsHtml;
         resultDiv.style.display = 'block';
-        // The button remains disabled on success to prevent resubmission.
-        // If you want to allow a new submission, you can reset the form and re-enable the button here.
+        submitBtn.innerText = 'ارسال انجام شد';
+        
       }).catch(err => {
-        // Display an error message on the page instead of an alert
         errorDiv.innerText = "خطایی در ارسال اطلاعات به Google Sheet رخ داد. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.";
         errorDiv.style.display = 'block';
         console.error(err);
-        // Re-enable the button ONLY if an error occurs
         submitBtn.disabled = false;
         submitBtn.innerText = 'محاسبه سبک یادگیری من';
       });
     };
-    // *** MODIFICATION END ***
   </script>
 </body>
 </html>
