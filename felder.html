@@ -119,7 +119,7 @@
   </style>
 </head>
 <body>
-  <h1>1.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
+  <h1>2.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
     <div class="user-info">
       <h2>اطلاعات (اختیاری)</h2>
@@ -292,7 +292,7 @@
       // --- اصلاح کد fetch برای ارسال صحیح داده‌ها ---
       fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
         method: "POST",
-        // mode: "no-cors"  <-- این خط حذف شد تا ارسال داده با موفقیت انجام شود
+        mode: "no-cors"
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSubmit),
       })
