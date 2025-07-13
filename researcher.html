@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Researcher Instructions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    ol {
+      margin-top: 1rem;
+    }
+    pre {
+      background: #eee;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 0.9rem;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .back {
+      margin-top: 2rem;
+      display: inline-block;
+      color: #007bff;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Researcher Setup Guide</h1>
+  <p>This guide helps you create your own customized test platform and save responses to your Google Sheet.</p>
+
+  <h2>Steps to Get Started</h2>
+  <ol>
+    <li>
+      <strong>Clone or fork this repository from GitHub:</strong><br>
+      <a href="https://github.com/yourusername/yourrepo" target="_blank" rel="noopener noreferrer">
+        https://github.com/yourusername/yourrepo
+      </a>
+    </li>
+    <li>
+      <strong>Modify the test HTML (e.g., felder.html):</strong><br>
+      Replace the <code>fetch</code> URL with your own Google Apps Script Web App URL to save data.
+    </li>
+    <li>
+      <strong>Create a Google Sheet to store responses:</strong><br>
+      Set up columns for the dimensions (e.g., ACT_REF, SEN_INT, VIS_VRB, SEQ_GLO) and timestamps.
+    </li>
+    <li>
+      <strong>Create a Google Apps Script Web App:</strong><br>
+      Use this sample script and publish it as a Web App accessible by anyone:
+      <pre><code>function doPost(e) {
+  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Sheet1");
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([new Date(), data.ACT_REF, data.SEN_INT, data.VIS_VRB, data.SEQ_GLO]);
+  return ContentService.createTextOutput("Success");
+}</code></pre>
+    </li>
+    <li>
+      <strong>Deploy your GitHub repository using GitHub Pages</strong><br>
+      Your tests will be live and will send data to your Google Sheet.
+    </li>
+  </ol>
+
+  <div class="back" onclick="window.location.href='index.html'">← Back to Main Page</div>
+</body>
+</html>
