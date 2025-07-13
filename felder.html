@@ -1,17 +1,67 @@
+Of course\! Here is the updated HTML code with the Farsi questions and the corresponding logic, fully translated and styled for a right-to-left (RTL) layout.
+
+You can copy and paste this code directly into an `.html` file and open it in your browser to use the test.
+
+```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Felder-Silverman Learning Style Test</title>
+  <title>آزمون سبک یادگیری فلدر-سیلورمن</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 2rem; }
-    h1 { text-align: center; }
-    .question { background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; }
-    .question h3 { margin-bottom: 0.5rem; }
-    .options label { margin-right: 1rem; }
-    .result { margin-top: 2rem; font-size: 1.5rem; font-weight: bold; text-align: center; }
-    button { display: block; margin: 2rem auto; padding: 0.5rem 1rem; font-size: 1rem; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 2rem;
+      direction: rtl; /* Set direction to Right-to-Left */
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+    .question h3 {
+      margin-bottom: 1rem;
+      text-align: right;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 0.5rem;
+      text-align: right;
+    }
+    .options input {
+      margin-left: 0.5rem; /* Add margin to the left of radio button */
+    }
+    .result {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #e9f5e9;
+      border: 1px solid #c8e6c9;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      line-height: 2;
+    }
+    button[type="submit"] {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
     .back-button {
       display: block;
       margin: 2rem auto;
@@ -28,35 +78,63 @@
   </style>
 </head>
 <body>
-  <h1>Felder-Silverman Learning Style Test</h1>
+  <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
     <div id="questions"></div>
-    <button type="submit">Calculate My Learning Style</button>
+    <button type="submit">محاسبه سبک یادگیری من</button>
   </form>
   <div id="result" class="result"></div>
 
   <div class="back-button" onclick="window.location.href='index.html'">
-    ← Back to Main Page
+    → بازگشت به صفحه اصلی
   </div>
 
   <script>
     const questions = [
-      { text: "I understand something better after I try it out.", dimension: "ACT-REF", direction: 1 },
-      { text: "I understand something better after I think it through.", dimension: "ACT-REF", direction: -1 },
-      { text: "I prefer to learn facts.", dimension: "SEN-INT", direction: 1 },
-      { text: "I prefer to learn concepts.", dimension: "SEN-INT", direction: -1 },
-      { text: "I remember best what I see.", dimension: "VIS-VRB", direction: 1 },
-      { text: "I remember best what I hear.", dimension: "VIS-VRB", direction: -1 },
-      { text: "I tend to be neat and orderly.", dimension: "SEQ-GLO", direction: 1 },
-      { text: "I tend to be creative and intuitive.", dimension: "SEQ-GLO", direction: -1 },
-      { text: "I learn by trying things with others.", dimension: "ACT-REF", direction: 1 },
-      { text: "I learn best when I work alone.", dimension: "ACT-REF", direction: -1 },
-      { text: "I like information presented step-by-step.", dimension: "SEQ-GLO", direction: 1 },
-      { text: "I like seeing the big picture first.", dimension: "SEQ-GLO", direction: -1 },
-      { text: "I learn more from pictures and diagrams.", dimension: "VIS-VRB", direction: 1 },
-      { text: "I learn more from spoken explanations.", dimension: "VIS-VRB", direction: -1 },
-      { text: "I am more practical than imaginative.", dimension: "SEN-INT", direction: 1 },
-      { text: "I am more imaginative than practical.", dimension: "SEN-INT", direction: -1 }
+        { q: "۱) هنگامی مطلب را بهتر می فهمیم که:", a: "الف) آن را آزمایش می کنم.", b: "ب) درباره آن کاملاً فکر می کنم.", dim: "ACT-REF" },
+        { q: "۲) ترجیح می دهم:", a: "الف) واقع بین به نظر برسم.", b: "ب) مبتکر به نظر برسم.", dim: "SEN-INT" },
+        { q: "۳) وقتی به آنچه دیروز انجام داده ام فکر می کنم، بیشتر:", a: "الف) آن را به صورت تصویر به یاد می آورم.", b: "ب) آن را به صورت کلمات به یاد می آورم.", dim: "VIS-VRB" },
+        { q: "۴) معمولاً:", a: "الف) جزئیات موضوع را می فهمم، اما درباره ساختار کلی آن گیج می شوم.", b: "ب) ساختار کلی موضوع را می فهمم، اما درباره جزئیات آن گیج می شوم.", dim: "SEQ-GLO" },
+        { q: "۵) برای یادگیری هر چیز تازه:", a: "الف) صحبت کردن درباره آن به من کمک می کند.", b: "ب) فکر کردن درباره آن به من کمک می کند.", dim: "ACT-REF" },
+        { q: "۶) اگر معلم شوم، ترجیح می دهم درسی بدهم که:", a: "الف) با حقایق زندگی سروکار داشته باشد.", b: "ب) با عقاید و نظریه ها سروکار داشته باشد.", dim: "SEN-INT" },
+        { q: "۷) ترجیح می دهم مطالب جدید را از طریق:", a: "الف) تصاویر، جدولها و نقشه ها یاد بگیرم.", b: "ب) دستورالعملهای مکتوب یا اطلاعات شفاهی یاد بگیرم.", dim: "VIS-VRB" },
+        { q: "۸) وقتی:", a: "الف) همه اجزای مطلب را بفهمم، کل مطلب را می فهمم.", b: "ب) کل مطلب را بفهمم، همه اجزای آن را می فهمم.", dim: "SEQ-GLO" },
+        { q: "۹) در میان گروهی که مسئله دشواری را بررسی می کنند، من به احتمال زیاد:", a: "الف) وارد بحث می شوم و عقیده ام را بیان می کنم.", b: "ب) در گوشه ای می نشینم و گوش می دهم.", dim: "ACT-REF" },
+        { q: "۱۰) یادگیری:", a: "الف) واقعیات را آسان تر می دانم.", b: "ب) مفاهیم را آسان تر می دانم.", dim: "SEN-INT" },
+        { q: "۱۱) هنگام مطالعه کتابی که تصاویر و شکلهای بسیار زیادی دارد، به احتمال زیاد:", a: "الف) تصاویر و نمودارها را به دقت بررسی می کنم.", b: "ب) توجه خود را به نوشته های کتاب معطوف می کنم.", dim: "VIS-VRB" },
+        { q: "۱۲) هنگام حل مسائل ریاضی:", a: "الف) معمولاً مرحله به مرحله روی راه حلهایی که به جواب می رسند کار می کنم.", b: "ب) غالباً ابتدا راه حلها را بررسی می کنم و سپس سعی می کنم مراحلی که برای رسیدن به آنها لازم است بیابم.", dim: "SEQ-GLO" },
+        { q: "۱۳) وقتی در کلاسی شرکت می کنم:", a: "الف) معمولاً با بسیاری از دانش آموزان آشنا می شوم.", b: "ب) معمولاً با تعداد کمی از دانش آموزان آشنا می شوم.", dim: "ACT-REF" },
+        { q: "۱۴) در مطالعه مطالب واقعی، ترجیح می دهم مطالب:", a: "الف) چیزهای جدیدی به من بیاموزند یا به من چگونگی انجام دادن کارها را یاد بدهند.", b: "ب) ایده های جدیدی برای فکر کردن درباره آنها در اختیار من بگذراند.", dim: "SEN-INT" },
+        { q: "۱۵) معلمانی را دوست دارم که هنگام درس دادن:", a: "الف) جدولها و نمودارهای زیادی روی تخته می کشند.", b: "ب) زمان زیادی را صرف توضیح دادن می کنند.", dim: "VIS-VRB" },
+        { q: "۱۶) هنگام تحلیل داستان یا رمان:", a: "الف) به اتفاقات داستان فکر می کنم و می کوشم آنها را به منظور فهم موضوع اصلی داستان به یکدیگر مرتبط سازم.", b: "ب) چون وقتی که داستان را تمام می کنم فقط موضوع اصلی آن را به خاطر می آورم، باید به عقب برگردم و رابطه بین اتفاقهای داستان را پیدا کنم.", dim: "SEQ-GLO" },
+        { q: "۱۷) وقتی حل مسئله را شروع می کنم، به احتمال زیاد:", a: "الف) بلافاصله روی راه حل آن کار می کنم.", b: "ب) ابتدا سعی می کنم مسئله را کاملاً بفهمم.", dim: "ACT-REF" },
+        { q: "۱۸) بیشتر:", a: "الف) عقاید قطعی را ترجیح می دهم.", b: "ب) فرضیات را ترجیح می دهم.", dim: "SEN-INT" },
+        { q: "۱۹) آنچه را:", a: "الف) می بینم بهتر به یاد می آورم.", b: "ب) می شنوم بهتر به یاد می آورم.", dim: "VIS-VRB" },
+        { q: "۲۰) برای من خیلی مهم است که معلم:", a: "الف) مطالب را با نظم و ترتیب روشن ارائه دهد.", b: "ب) تصویری کلی از مطالب را ارائه دهد و آن را با موضوعات دیگر مرتبط سازد.", dim: "SEQ-GLO" },
+        { q: "۲۱) ترجیح می دهم:", a: "الف) در گروه مطالعه کنم.", b: "ب) به تنهایی مطالعه کنم.", dim: "ACT-REF" },
+        { q: "۲۲) بیشتر ترجیح می دهم:", a: "الف) درباره جزئیات کار دقیق باشم.", b: "ب) در چگونگی انجام دادن کار خلاق باشم.", dim: "SEN-INT" },
+        { q: "۲۳) برای پیدا کردن محلی ناآشنا:", a: "الف) استفاده از نقشه را ترجیح می دهم.", b: "ب) استفاده از آدرس مکتوب را ترجیح می دهم.", dim: "VIS-VRB" },
+        { q: "۲۴) مطالب را:", a: "الف) در مراحل نسبتاً منظم و با تلاش زیاد یاد می گیرم.", b: "ب) در ابتدا خوب نمی فهمم و کاملاً گیج می شوم، اما ناگهان آن را یاد می گیرم.", dim: "SEQ-GLO" },
+        { q: "۲۵) ترجیح می دهم ابتدا:", a: "الف) کارها را انجام دهم.", b: "ب) در باره چگونگی انجام دادن کارها فکر کنم.", dim: "ACT-REF" },
+        { q: "۲۶) وقتی برای سرگرمی مطالعه می کنم، نویسندگانی را ترجیح می دهم که:", a: "الف) به روشنی منظورشان را بیان می کنند.", b: "ب) مطالب را به روشهای جالب و خلاق بیان می کنند.", dim: "SEN-INT" },
+        { q: "۲۷) وقتی در کلاس تصویر یا شکلی می بینم، احتمال زیادی وجود دارد که:", a: "الف) تصویر یا شکل را به یاد بیاورم.", b: "ب) توضیحات معلم درباره تصویر یا شکل را به یاد بیاورم.", dim: "VIS-VRB" },
+        { q: "۲۸) هنگامی که با اطلاعات زیادی مواجه می شوم به احتمال زیاد:", a: "الف) به جزئیات توجه می کنم و اصل مطلب را از دست می دهم.", b: "ب) سعی می کنم، قبل از پرداختن به جزئیات، اصل مطلب را بفهمم.", dim: "SEQ-GLO" },
+        { q: "۲۹) یادآوری:", a: "الف) آنچه را انجام داده ام آسان تر می دانم.", b: "ب) آنچه را درباره اش زیاد فکر کرده ام، آسان تر می دانم.", dim: "ACT-REF" },
+        { q: "۳۰) وقتی باید کاری انجام دهم، ترجیح می دهم:", a: "الف) برای انجام دادن آن در یکی از روشهای موجود مهارت کسب کنم.", b: "ب) روشهای جدیدی ابداع کنم و به کار گیرم.", dim: "SEN-INT" },
+        { q: "۳۱) وقتی فردی متنی به من نشان می دهد:", a: "الف) شکلها و تصاویر آن را ترجیح می دهم.", b: "ب) خلاصه متن و نتایج آن را ترجیح می دهم.", dim: "VIS-VRB" },
+        { q: "۳۲) برای تدوین مقاله، به احتمال زیاد:", a: "الف) نگارش مقاله را از ابتدا شروع می کنم و با رعایت ترتیب بخشها ادامه می دهم.", b: "ب) بخشهای مختلف مقاله را بدون توجه به ترتیب آنها آماده و سپس مرتب می کنم.", dim: "SEQ-GLO" },
+        { q: "۳۳) وقتی باید با دیگران به صورت گروهی کار کنم، مایلم در آغاز:", a: "الف) هر یک از افراد گروه عقاید و نظرهایشان را مطرح کنند.", b: "ب) افراد عقاید خود را ابتدا به صورت انفرادی بررسی و سپس در گروه مطرح کنند.", dim: "ACT-REF" },
+        { q: "۳۴) به نظر من بالاترین تمجید آن است که فرد را:", a: "الف) معقول بدانیم.", b: "ب) دارای تخیل قوی بدانیم.", dim: "SEN-INT" },
+        { q: "۳۵) اگر افرادی را در میهمانی ملاقات کنم، احتمال زیادی وجود دارد که:", a: "الف) چهره آنها را به یاد بیاورم.", b: "ب) آنچه را درباره خودشان گفته اند به یاد بیاورم.", dim: "VIS-VRB" },
+        { q: "۳۶) وقتی موضوع جدیدی یاد می گیرم، ترجیح می دهم:", a: "الف) بر آن متمرکز شوم و تا آنجا که می توانم درباره آن مطالبی یاد بگیرم.", b: "ب) آن موضوع را با موضعهای دیگر مرتبط کنم.", dim: "SEQ-GLO" },
+        { q: "۳۷) به نظر دیگران، من:", a: "الف) خوش برخورد به شمار می آیم.", b: "ب) خوددار به شمار می آیم.", dim: "ACT-REF" },
+        { q: "۳۸) دروسی را ترجیح می دهم که بر:", a: "الف) موضوعات عینی مانند واقعیات و اطلاعات متمرکز باشند.", b: "ب) موضوعات انتزاعی مانند مفاهیم و نظریه ها متمرکز باشند.", dim: "SEN-INT" },
+        { q: "۳۹) برای سرگرمی، ترجیح می دهم:", a: "الف) تلویزیون تماشا کنم.", b: "ب) کتاب بخوانم.", dim: "VIS-VRB" },
+        { q: "۴۰) بعضی از معلمان درس خود را با خلاصه ای از موضوع مورد بحث شروع می کنند، این خلاصه ها برای من:", a: "الف) کمی مفید هستند.", b: "ب) بسیار مفید هستند.", dim: "SEQ-GLO" },
+        { q: "۴۱) وقتی تکلیف به صورت گروهی انجام می شود، اختصاص یک نمره برای کل گروه:", a: "الف) درست است.", b: "ب) درست نیست.", dim: "ACT-REF" },
+        { q: "۴۲) در محاسبات طولانی، تمایل به:", a: "الف) مرور تمامی مراحل و کنترل دقیق محاسبات دارم.", b: "ب) مرور تمامی مراحل و کنترل دقیق محاسبات ندارم و باید خود را مجبور به انجام دادن آن کنم.", dim: "SEN-INT" },
+        { q: "۴۳) تجسم مکانهایی که در آنها بوده ام برای من:", a: "الف) نسبتاً آسان، کامل و دقیق است.", b: "ب) دشوار، بدون جزئیات و بی دقت است.", dim: "VIS-VRB" },
+        { q: "۴۴) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
     ];
 
     const container = document.getElementById("questions");
@@ -64,13 +142,10 @@
       const div = document.createElement("div");
       div.className = "question";
       div.innerHTML = `
-        <h3>Q${i + 1}. ${q.text}</h3>
+        <h3>${q.q}</h3>
         <div class="options">
-          <label><input type="radio" name="q${i}" value="1" required> Strongly Disagree</label>
-          <label><input type="radio" name="q${i}" value="2"> Disagree</label>
-          <label><input type="radio" name="q${i}" value="3"> Neutral</label>
-          <label><input type="radio" name="q${i}" value="4"> Agree</label>
-          <label><input type="radio" name="q${i}" value="5"> Strongly Agree</label>
+          <label><input type="radio" name="q${i}" value="a" required> ${q.a}</label>
+          <label><input type="radio" name="q${i}" value="b" required> ${q.b}</label>
         </div>
       `;
       container.appendChild(div);
@@ -81,44 +156,49 @@
       e.preventDefault();
 
       const scores = {
-        "ACT-REF": 0,
-        "SEN-INT": 0,
-        "VIS-VRB": 0,
-        "SEQ-GLO": 0
+        "ACT-REF": 0, // Active(+) vs Reflective(-) | فعال / تأملی
+        "SEN-INT": 0, // Sensing(+) vs Intuitive(-) | حسی / شهودی
+        "VIS-VRB": 0, // Visual(+) vs Verbal(-) | دیداری / کلامی
+        "SEQ-GLO": 0  // Sequential(+) vs Global(-) | متوالی / کلی
       };
 
       questions.forEach((q, i) => {
-        const val = parseInt(document.querySelector(`input[name='q${i}']:checked`).value);
-        scores[q.dimension] += q.direction * (val - 3);
+        const val = document.querySelector(`input[name='q${i}']:checked`).value;
+        // if 'a' is chosen, score increases; if 'b', it decreases.
+        scores[q.dim] += (val === 'a' ? 1 : -1);
       });
 
-      const getStyle = (score, dimA, dimB) => score >= 0 ? dimA : dimB;
+      const getStyle = (score, styleA, styleB) => score >= 0 ? styleA : styleB;
+      
+      const styles = {
+        ACT_REF: getStyle(scores["ACT-REF"], "فعال (Active)", "تأملی (Reflective)"),
+        SEN_INT: getStyle(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
+        VIS_VRB: getStyle(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
+        SEQ_GLO: getStyle(scores["SEQ-GLO"], "متوالی (Sequential)", "کلی (Global)")
+      };
 
       const resultText = `
-        Your Learning Style is:
-        <br>Active vs Reflective: <strong>${getStyle(scores["ACT-REF"], "Active", "Reflective")}</strong>
-        <br>Sensing vs Intuitive: <strong>${getStyle(scores["SEN-INT"], "Sensing", "Intuitive")}</strong>
-        <br>Visual vs Verbal: <strong>${getStyle(scores["VIS-VRB"], "Visual", "Verbal")}</strong>
-        <br>Sequential vs Global: <strong>${getStyle(scores["SEQ-GLO"], "Sequential", "Global")}</strong>
+        <strong>سبک یادگیری شما:</strong>
+        <br>فعال / تأملی: <strong>${styles.ACT_REF}</strong>
+        <br>حسی / شهودی: <strong>${styles.SEN_INT}</strong>
+        <br>دیداری / کلامی: <strong>${styles.VIS_VRB}</strong>
+        <br>متوالی / کلی: <strong>${styles.SEQ_GLO}</strong>
       `;
 
       document.getElementById("result").innerHTML = resultText;
 
-      // Send data to Google Sheets
+      // This part sends the data to your Google Sheet.
+      // The Farsi/English labels are sent for clarity.
       fetch("https://script.google.com/macros/s/AKfycbz82Fd2_RZWKGc-u0i5kO6ODXN3HyOAT2ADF0EbjPUsvyWcsm41dHDyWA4XKkjJ-CJb6w/exec", {
         method: "POST",
         mode: "no-cors",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          ACT_REF: getStyle(scores["ACT-REF"], "Active", "Reflective"),
-          SEN_INT: getStyle(scores["SEN-INT"], "Sensing", "Intuitive"),
-          VIS_VRB: getStyle(scores["VIS-VRB"], "Visual", "Verbal"),
-          SEQ_GLO: getStyle(scores["SEQ-GLO"], "Sequential", "Global")
-        })
+        body: JSON.stringify(styles)
       });
     };
   </script>
 </body>
 </html>
+```
