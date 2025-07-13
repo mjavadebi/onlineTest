@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -5,8 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>آزمون سبک یادگیری فلدر-سیلورمن</title>
   <style>
+    /* Import Vazirmatn font from Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
+      /* Set Vazirmatn as the primary font */
+      font-family: 'Vazirmatn', Arial, sans-serif;
       background: #f4f4f4;
       padding: 2rem;
       direction: rtl; /* Set direction to Right-to-Left */
@@ -41,7 +46,7 @@
       font-size: 1.2rem;
       font-weight: bold;
       text-align: center;
-      line-height: 2;
+      line-height: 2.2; /* Increased line-height for better readability */
     }
     button[type="submit"] {
       display: block;
@@ -53,6 +58,7 @@
       color: white;
       border: none;
       border-radius: 5px;
+      font-family: 'Vazirmatn', sans-serif; /* Ensure button uses the font */
     }
     button[type="submit"]:hover {
         background-color: #0056b3;
@@ -123,13 +129,13 @@
         { q: "۳۵) اگر افرادی را در میهمانی ملاقات کنم، احتمال زیادی وجود دارد که:", a: "الف) چهره آنها را به یاد بیاورم.", b: "ب) آنچه را درباره خودشان گفته اند به یاد بیاورم.", dim: "VIS-VRB" },
         { q: "۳۶) وقتی موضوع جدیدی یاد می گیرم، ترجیح می دهم:", a: "الف) بر آن متمرکز شوم و تا آنجا که می توانم درباره آن مطالبی یاد بگیرم.", b: "ب) آن موضوع را با موضعهای دیگر مرتبط کنم.", dim: "SEQ-GLO" },
         { q: "۳۷) به نظر دیگران، من:", a: "الف) خوش برخورد به شمار می آیم.", b: "ب) خوددار به شمار می آیم.", dim: "ACT-REF" },
-        { q: "۳۸) دروسی را ترجیح می دهم که بر:", a: "الف) موضوعات عینی مانند واقعیات و اطلاعات متمرکز باشند.", b: "ب) موضوعات انتزاعی مانند مفاهیم و نظریه ها متمرکز باشند.", dim: "SEN-INT" },
-        { q: "۳۹) برای سرگرمی، ترجیح می دهم:", a: "الف) تلویزیون تماشا کنم.", b: "ب) کتاب بخوانم.", dim: "VIS-VRB" },
-        { q: "۴۰) بعضی از معلمان درس خود را با خلاصه ای از موضوع مورد بحث شروع می کنند، این خلاصه ها برای من:", a: "الف) کمی مفید هستند.", b: "ب) بسیار مفید هستند.", dim: "SEQ-GLO" },
-        { q: "۴۱) وقتی تکلیف به صورت گروهی انجام می شود، اختصاص یک نمره برای کل گروه:", a: "الف) درست است.", b: "ب) درست نیست.", dim: "ACT-REF" },
-        { q: "۴۲) در محاسبات طولانی، تمایل به:", a: "الف) مرور تمامی مراحل و کنترل دقیق محاسبات دارم.", b: "ب) مرور تمامی مراحل و کنترل دقیق محاسبات ندارم و باید خود را مجبور به انجام دادن آن کنم.", dim: "SEN-INT" },
-        { q: "۴۳) تجسم مکانهایی که در آنها بوده ام برای من:", a: "الف) نسبتاً آسان، کامل و دقیق است.", b: "ب) دشوار، بدون جزئیات و بی دقت است.", dim: "VIS-VRB" },
-        { q: "۴۴) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
+        { q: "۳８) دروسی را ترجیح می دهم که بر:", a: "الف) موضوعات عینی مانند واقعیات و اطلاعات متمرکز باشند.", b: "ب) موضوعات انتزاعی مانند مفاهیم و نظریه ها متمرکز باشند.", dim: "SEN-INT" },
+        { q: "۳９) برای سرگرمی، ترجیح می دهم:", a: "الف) تلویزیون تماشا کنم.", b: "ب) کتاب بخوانم.", dim: "VIS-VRB" },
+        { q: "۴０) بعضی از معلمان درس خود را با خلاصه ای از موضوع مورد بحث شروع می کنند، این خلاصه ها برای من:", a: "الف) کمی مفید هستند.", b: "ب) بسیار مفید هستند.", dim: "SEQ-GLO" },
+        { q: "۴１) وقتی تکلیف به صورت گروهی انجام می شود، اختصاص یک نمره برای کل گروه:", a: "الف) درست است.", b: "ب) درست نیست.", dim: "ACT-REF" },
+        { q: "۴２) در محاسبات طولانی، تمایل به:", a: "الف) مرور تمامی مراحل و کنترل دقیق محاسبات دارم.", b: "ب) مرور تمامی مراحل و کنترل دقیق محاسبات ندارم و باید خود را مجبور به انجام دادن آن کنم.", dim: "SEN-INT" },
+        { q: "۴３) تجسم مکانهایی که در آنها بوده ام برای من:", a: "الف) نسبتاً آسان، کامل و دقیق است.", b: "ب) دشوار، بدون جزئیات و بی دقت است.", dim: "VIS-VRB" },
+        { q: "۴４) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
     ];
 
     const container = document.getElementById("questions");
@@ -163,13 +169,24 @@
         scores[q.dim] += (val === 'a' ? 1 : -1);
       });
 
-      const getStyle = (score, styleA, styleB) => score >= 0 ? styleA : styleB;
+      // --- NEW FUNCTION to calculate style and percentage ---
+      const calculateStyleAndPercentage = (score, styleA, styleB) => {
+          const totalQuestionsPerDimension = 11;
+          // Handle the case for a perfectly balanced score
+          if (score === 0) {
+              return "متعادل (Balanced)";
+          }
+          // Calculate the percentage strength towards the dominant style
+          const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
+          const dominantStyle = score > 0 ? styleA : styleB;
+          return `${dominantStyle} (${percentage}%)`;
+      };
       
       const styles = {
-        ACT_REF: getStyle(scores["ACT-REF"], "فعال (Active)", "تأملی (Reflective)"),
-        SEN_INT: getStyle(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
-        VIS_VRB: getStyle(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
-        SEQ_GLO: getStyle(scores["SEQ-GLO"], "متوالی (Sequential)", "کلی (Global)")
+        ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأملی (Reflective)"),
+        SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
+        VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
+        SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "متوالی (Sequential)", "کلی (Global)")
       };
 
       const resultText = `
@@ -182,8 +199,7 @@
 
       document.getElementById("result").innerHTML = resultText;
 
-      // This part sends the data to your Google Sheet.
-      // The Farsi/English labels are sent for clarity.
+      // This part sends the data (now including percentages) to your Google Sheet.
       fetch("https://script.google.com/macros/s/AKfycbz82Fd2_RZWKGc-u0i5kO6ODXN3HyOAT2ADF0EbjPUsvyWcsm41dHDyWA4XKkjJ-CJb6w/exec", {
         method: "POST",
         mode: "no-cors",
