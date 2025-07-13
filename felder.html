@@ -9,14 +9,40 @@
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
 
     body {
-      /* Set Vazirmatn as the primary font */
       font-family: 'Vazirmatn', Arial, sans-serif;
       background: #f4f4f4;
       padding: 2rem;
-      direction: rtl; /* Set direction to Right-to-Left */
+      direction: rtl;
     }
-    h1 {
+    h1, h2 {
       text-align: center;
+    }
+    .user-info {
+        background: white;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+    }
+    .user-info h2 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Important for padding and width */
+        font-family: 'Vazirmatn', sans-serif;
     }
     .question {
       background: white;
@@ -34,7 +60,7 @@
       text-align: right;
     }
     .options input {
-      margin-left: 0.5rem; /* Add margin to the left of radio button */
+      margin-left: 0.5rem;
     }
     .result {
       margin-top: 2rem;
@@ -45,7 +71,7 @@
       font-size: 1.2rem;
       font-weight: bold;
       text-align: center;
-      line-height: 2.2; /* Increased line-height for better readability */
+      line-height: 2.2;
     }
     button[type="submit"] {
       display: block;
@@ -57,7 +83,7 @@
       color: white;
       border: none;
       border-radius: 5px;
-      font-family: 'Vazirmatn', sans-serif; /* Ensure button uses the font */
+      font-family: 'Vazirmatn', sans-serif;
     }
     button[type="submit"]:hover {
         background-color: #0056b3;
@@ -80,6 +106,26 @@
 <body>
   <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
+    <div class="user-info">
+      <h2>اطلاعات (اختیاری)</h2>
+      <div class="form-group">
+        <label for="name">نام و نام خانوادگی</label>
+        <input type="text" id="name" name="name" placeholder="مثال: مریم رضایی">
+      </div>
+      <div class="form-group">
+        <label for="age">سن</label>
+        <input type="number" id="age" name="age" placeholder="مثال: ۲۱">
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">شماره تلفن</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹">
+      </div>
+      <div class="form-group">
+        <label for="studentId">شماره دانشجویی</label>
+        <input type="text" id="studentId" name="studentId" placeholder="مثال: ۹۸۷۶۵۴۳۲۱">
+      </div>
+    </div>
+    
     <div id="questions"></div>
     <button type="submit">محاسبه سبک یادگیری من</button>
   </form>
@@ -154,6 +200,14 @@
     const form = document.getElementById("quizForm");
     form.onsubmit = function(e) {
       e.preventDefault();
+
+      // --- CAPTURE USER INFO ---
+      const userInfo = {
+          Name: document.getElementById('name').value,
+          Age: document.getElementById('age').value,
+          PhoneNumber: document.getElementById('phoneNumber').value,
+          StudentID: document.getElementById('studentId').value,
+      };
       
       const individualAnswers = {};
       const scores = {
@@ -164,9 +218,8 @@
         const val = document.querySelector(`input[name='q${i}']:checked`).value;
         scores[q.dim] += (val === 'a' ? 1 : -1);
         
-        // Store individual answer with a formatted key like "Q1-ACT-REF"
         const questionKey = `Q${i + 1}-${q.dim}`;
-        individualAnswers[questionKey] = val; // Stores 'a' or 'b'
+        individualAnswers[questionKey] = val;
       });
 
       const calculateStyleAndPercentage = (score, styleA, styleB) => {
@@ -192,9 +245,14 @@
         <br>متوالی / کلی: <strong>${finalResults.Result_SEQ_GLO}</strong>
       `;
       document.getElementById("result").innerHTML = resultText;
-
-      // Combine individual answers and final results into one object for submission
-      const dataToSubmit = { ...individualAnswers, ...finalResults };
+      
+      const timestamp = new Date().toISOString();
+      const dataToSubmit = { 
+          Timestamp: timestamp, 
+          ...userInfo,
+          ...individualAnswers, 
+          ...finalResults 
+      };
 
       fetch("https://script.google.com/macros/s/AKfycbz82Fd2_RZWKGc-u0i5kO6ODXN3HyOAT2ADF0EbjPUsvyWcsm41dHDyWA4XKkjJ-CJb6w/exec", {
         method: "POST",
