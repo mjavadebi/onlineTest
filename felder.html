@@ -169,7 +169,7 @@
   </style>
 </head>
 <body>
-  <h1>2.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
+  <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
     <div class="user-info">
       <h2>اطلاعات (اختیاری)</h2>
@@ -406,7 +406,14 @@
       descriptionsHtml += getStyleDescription(scores["SEQ-GLO"], 'Sequential', 'Global');
       descriptionsHtml += '</div>';
 
-      const dataToSend = { ...userInfo, ...individualAnswers, ...finalResults };
+      // *** MODIFICATION: Add a timestamp to the data sent to Google Sheets ***
+      const timestamp = new Date().toLocaleString('fa-IR');
+      const dataToSend = { 
+        Timestamp: timestamp,
+        ...userInfo, 
+        ...individualAnswers, 
+        ...finalResults 
+      };
 
       fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
         method: "POST",
