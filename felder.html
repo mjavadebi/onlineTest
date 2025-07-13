@@ -256,10 +256,15 @@
 
       fetch("https://script.google.com/macros/s/AKfycbz82Fd2_RZWKGc-u0i5kO6ODXN3HyOAT2ADF0EbjPUsvyWcsm41dHDyWA4XKkjJ-CJb6w/exec", {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToSubmit)
-      });
+        // The "mode: 'no-cors'" line has been REMOVED. This is the fix.
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSubmit),
+      })
+      .then(response => response.text())
+      .then(data => console.log(data)) // Optional: logs "Success" or the error from the script
+      .catch(error => console.error('Error:', error));
     };
   </script>
 </body>
