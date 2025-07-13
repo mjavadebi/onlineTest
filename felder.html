@@ -104,7 +104,7 @@
   </style>
 </head>
 <body>
-  <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
+  <h1>1.0 آزمون سبک یادگیری فلدر-سیلورمن</h1>
   <form id="quizForm">
     <div class="user-info">
       <h2>اطلاعات (اختیاری)</h2>
@@ -280,6 +280,13 @@ form.onsubmit = function(e) {
       دریافت اطلاعات: ${finalResults.Result_SEN_INT}\n
       شیوه ارائه اطلاعات: ${finalResults.Result_VIS_VRB}\n
       پردازش اطلاعات: ${finalResults.Result_SEQ_GLO}`;
+        detailsContainer.innerHTML = `
+      <h2>تحلیل سبک یادگیری شما</h2>
+      ${getExplanation("ACT-REF", scores["ACT-REF"])}
+      ${getExplanation("SEN-INT", scores["SEN-INT"])}
+      ${getExplanation("VIS-VRB", scores["VIS-VRB"])}
+      ${getExplanation("SEQ-GLO", scores["SEQ-GLO"])}
+    `;
   }).catch(err => {
     alert("خطایی در ارسال اطلاعات به Google Sheet رخ داد.");
     console.error(err);
