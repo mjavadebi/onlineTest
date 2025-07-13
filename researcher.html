@@ -1,86 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Researcher Instructions</title>
+  <title>راهنمای پژوهشگر</title>
   <style>
+    /* Import Vazirmatn font from Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Vazirmatn', Arial, sans-serif;
       background: #f4f4f4;
-      max-width: 700px;
+      max-width: 800px;
       margin: 2rem auto;
-      padding: 1rem;
+      padding: 2rem;
       background: white;
       border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      direction: rtl;
+      line-height: 1.8;
     }
-    h1, h2 {
+    h1, h2, h3 {
       text-align: center;
+      color: #333;
+    }
+    h2 {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 0.5rem;
+        margin-top: 2.5rem;
+    }
+    p, li {
+        color: #555;
+        text-align: right;
     }
     ol {
-      margin-top: 1rem;
+      padding-right: 20px;
+    }
+    li {
+        margin-bottom: 1rem;
+    }
+    code {
+        background: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Vazirmatn', monospace;
+        direction: ltr;
+        display: inline-block;
     }
     pre {
-      background: #eee;
-      padding: 1rem;
+      background: #2d333b;
+      color: #cdd9e5;
+      padding: 1.5rem;
       border-radius: 8px;
       overflow-x: auto;
-      font-family: Consolas, monospace;
+      font-family: Consolas, 'Vazirmatn', monospace;
       font-size: 0.9rem;
+      text-align: left;
+      direction: ltr;
+      white-space: pre-wrap;
     }
     a {
       color: #007bff;
       text-decoration: none;
+      font-weight: bold;
     }
     a:hover {
       text-decoration: underline;
     }
     .back {
-      margin-top: 2rem;
+      margin-top: 2.5rem;
       display: inline-block;
       color: #007bff;
       cursor: pointer;
       text-decoration: underline;
+      font-size: 1.1rem;
+    }
+    strong {
+        color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>Researcher Setup Guide</h1>
-  <p>This guide helps you create your own customized test platform and save responses to your Google Sheet.</p>
+  <h1>راهنمای راه‌اندازی برای پژوهشگران</h1>
+  <p>این راهنما به شما کمک می‌کند تا پلتفرم آزمون شخصی‌سازی شده خود را ایجاد کرده و پاسخ‌ها را در گوگل شیت (Google Sheet) خود ذخیره کنید.</p>
 
-  <h2>Steps to Get Started</h2>
+  <h2>مرحله ۱: دریافت کد پروژه</h2>
   <ol>
     <li>
-      <strong>Clone or fork this repository from GitHub:</strong><br>
+      <strong>کد پروژه را از گیت‌هاب (GitHub) دریافت کنید:</strong><br>
+      به آدرس زیر بروید و پروژه را از طریق Clone یا دانلود ZIP دریافت کنید.
+      <br>
       <a href="https://github.com/mjavadebi/onlineTest" target="_blank" rel="noopener noreferrer">
         https://github.com/mjavadebi/onlineTest
       </a>
     </li>
+  </ol>
+
+  <h2>مرحله ۲: ایجاد و تنظیم گوگل شیت</h2>
+  <ol>
+    <li>یک فایل <strong>Google Sheet</strong> جدید بسازید.</li>
     <li>
-      <strong>Modify the test HTML (e.g., felder.html):</strong><br>
-      Replace the <code>fetch</code> URL with your own Google Apps Script Web App URL to save data.
+      <strong>ستون‌ها را تنظیم کنید:</strong> در ردیف اول شیت، **دقیقا** ۵۳ ستون با عناوین زیر ایجاد کنید. این عناوین برای ذخیره صحیح داده‌ها ضروری هستند.
+      <p>
+        <strong>Timestamp, Name, Age, PhoneNumber, StudentID, Q1-ACT-REF, Q2-SEN-INT, ... (تا Q44-SEQ-GLO), Result_ACT_REF, ... (تا Result_SEQ_GLO)</strong>
+      </p>
+      برای مشاهده لیست کامل و دقیق ستون‌ها می‌توانید به پاسخ‌های قبلی مراجعه کنید.
+    </li>
+  </ol>
+  
+  <h2>مرحله ۳: ساخت و استقرار وب اپ (Web App)</h2>
+  <ol>
+    <li>
+        <strong>اسکریپت‌نویس را باز کنید:</strong> در همان گوگل شیت، از منوی بالا به <strong>Extensions > Apps Script</strong> بروید.
     </li>
     <li>
-      <strong>Create a Google Sheet to store responses:</strong><br>
-      Set up columns for the dimensions (e.g., ACT_REF, SEN_INT, VIS_VRB, SEQ_GLO) and timestamps.
-    </li>
-    <li>
-      <strong>Create a Google Apps Script Web App:</strong><br>
-      Use this sample script and publish it as a Web App accessible by anyone:
-      <pre><code>function doPost(e) {
-  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Sheet1");
-  var data = JSON.parse(e.postData.contents);
-  sheet.appendRow([new Date(), data.ACT_REF, data.SEN_INT, data.VIS_VRB, data.SEQ_GLO]);
-  return ContentService.createTextOutput("Success");
+        <strong>کد را جای‌گذاری کنید:</strong> تمام کدهای موجود در فایل <code>Code.gs</code> را پاک کرده و کد زیر را به طور کامل در آن جای‌گذاری کنید. این کد شامل هر دو تابع ضروری <code>doPost</code> و <code>doOptions</code> است.
+<pre><code>function doOptions(e) {
+  return ContentService.createTextOutput()
+    .addHeader('Access-Control-Allow-Origin', '*')
+    .addHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    .addHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data = JSON.parse(e.postData.contents);
+
+    const rowData = [
+      data.Timestamp || '', data.Name || '', data.Age || '', data.PhoneNumber || '', data.StudentID || '',
+      data['Q1-ACT-REF'] || '', data['Q2-SEN-INT'] || '', data['Q3-VIS-VRB'] || '', data['Q4-SEQ-GLO'] || '',
+      data['Q5-ACT-REF'] || '', data['Q6-SEN-INT'] || '', data['Q7-VIS-VRB'] || '', data['Q8-SEQ-GLO'] || '',
+      data['Q9-ACT-REF'] || '', data['Q10-SEN-INT'] || '', data['Q11-VIS-VRB'] || '', data['Q12-SEQ-GLO'] || '',
+      data['Q13-ACT-REF'] || '', data['Q14-SEN-INT'] || '', data['Q15-VIS-VRB'] || '', data['Q16-SEQ-GLO'] || '',
+      data['Q17-ACT-REF'] || '', data['Q18-SEN-INT'] || '', data['Q19-VIS-VRB'] || '', data['Q20-SEQ-GLO'] || '',
+      data['Q21-ACT-REF'] || '', data['Q22-SEN-INT'] || '', data['Q23-VIS-VRB'] || '', data['Q24-SEQ-GLO'] || '',
+      data['Q25-ACT-REF'] || '', data['Q26-SEN-INT'] || '', data['Q27-VIS-VRB'] || '', data['Q28-SEQ-GLO'] || '',
+      data['Q29-ACT-REF'] || '', data['Q30-SEN-INT'] || '', data['Q31-VIS-VRB'] || '', data['Q32-SEQ-GLO'] || '',
+      data['Q33-ACT-REF'] || '', data['Q34-SEN-INT'] || '', data['Q35-VIS-VRB'] || '', data['Q36-SEQ-GLO'] || '',
+      data['Q37-ACT-REF'] || '', data['Q38-SEN-INT'] || '', data['Q39-VIS-VRB'] || '', data['Q40-SEQ-GLO'] || '',
+      data['Q41-ACT-REF'] || '', data['Q42-SEN-INT'] || '', data['Q43-VIS-VRB'] || '', data['Q44-SEQ-GLO'] || '',
+      data.Result_ACT_REF || '', data.Result_SEN_INT || '', data.Result_VIS_VRB || '', data.Result_SEQ_GLO || ''
+    ];
+    
+    sheet.appendRow(rowData);
+    return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+
+  } catch (error) {
+    Logger.log(e.postData.contents);
+    Logger.log(error);
+    return ContentService.createTextOutput("Error: " + error.toString()).setMimeType(ContentService.MimeType.TEXT);
+  }
 }</code></pre>
     </li>
     <li>
-      <strong>Deploy your GitHub repository using GitHub Pages</strong><br>
-      Your tests will be live and will send data to your Google Sheet.
+      <strong>اسکریپت را مستقر (Deploy) کنید:</strong>
+      <ul>
+        <li>روی دکمه آبی‌رنگ <strong>Deploy</strong> در بالا سمت راست کلیک کرده و <strong>New deployment</strong> را انتخاب کنید.</li>
+        <li>روی آیکن چرخ‌دنده (⚙️) کلیک کرده و نوع آن را <strong>Web app</strong> انتخاب کنید.</li>
+        <li>در بخش "Who has access"، دسترسی را روی <strong>Anyone</strong> قرار دهید.</li>
+        <li>روی دکمه <strong>Deploy</strong> کلیک کنید.</li>
+      </ul>
+    </li>
+     <li>
+        <strong>URL وب اپ را کپی کنید:</strong> پس از استقرار، یک پنجره جدید با یک URL به شما نمایش داده می‌شود. این URL را کپی کنید. این آدرس برای مرحله بعد نیاز است.
     </li>
   </ol>
 
-  <div class="back" onclick="window.location.href='index.html'">← Back to Main Page</div>
+    <h2>مرحله ۴: اتصال آزمون به گوگل شیت</h2>
+  <ol>
+    <li>فایل HTML آزمون خود (مثلاً <code>felder-farsi.html</code>) را با یک ویرایشگر متن باز کنید.</li>
+    <li>به انتهای فایل بروید و قطعه کد <code>fetch</code> را پیدا کنید.</li>
+    <li><strong>URL جدید را جای‌گذاری کنید:</strong> آدرس وب اپی که در مرحله قبل کپی کردید را به جای آدرس فعلی در دستور <code>fetch</code> قرار دهید.</li>
+  </ol>
+
+  <h2>مرحله ۵: انتشار نهایی پروژه</h2>
+    <ol>
+    <li>
+      <strong>پروژه خود را آنلاین کنید:</strong> اگر از گیت‌هاب استفاده می‌کنید، می‌توانید پروژه خود را به سادگی با استفاده از <strong>GitHub Pages</strong> منتشر کنید.
+        <ul>
+            <li>در مخزن گیت‌هاب خود به بخش <strong>Settings > Pages</strong> بروید.</li>
+            <li>در بخش "Branch"، شاخه <code>main</code> یا <code>master</code> را انتخاب کرده و روی <strong>Save</strong> کلیک کنید.</li>
+            <li>پس از چند دقیقه، وب‌سایت شما فعال شده و آزمون‌ها برای شرکت‌کنندگان در دسترس خواهند بود.</li>
+        </ul>
+    </li>
+  </ol>
+
+  <div class="back" onclick="window.location.href='index.html'">→ بازگشت به صفحه اصلی</div>
 </body>
 </html>
