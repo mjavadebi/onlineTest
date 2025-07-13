@@ -18,31 +18,31 @@
       text-align: center;
     }
     .user-info {
-        background: white;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        border-radius: 8px;
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
     }
     .user-info h2 {
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-        font-size: 1.5rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
     }
     .form-group {
-        margin-bottom: 1rem;
+      margin-bottom: 1rem;
     }
     .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
     }
     .form-group input {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box; /* Important for padding and width */
-        font-family: 'Vazirmatn', sans-serif;
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-family: 'Vazirmatn', sans-serif;
     }
     .question {
       background: white;
@@ -62,16 +62,31 @@
     .options input {
       margin-left: 0.5rem;
     }
-    .result {
+    .result-container {
       margin-top: 2rem;
       padding: 1.5rem;
       background: #e9f5e9;
       border: 1px solid #c8e6c9;
       border-radius: 8px;
       font-size: 1.2rem;
-      font-weight: bold;
       text-align: center;
-      line-height: 2.2;
+    }
+    .result-summary {
+        font-weight: bold;
+        line-height: 2.2;
+        margin-bottom: 2rem;
+    }
+    .result-details {
+        text-align: right;
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+    .result-details h3 {
+        color: #0056b3;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 0.5rem;
     }
     button[type="submit"] {
       display: block;
@@ -86,7 +101,7 @@
       font-family: 'Vazirmatn', sans-serif;
     }
     button[type="submit"]:hover {
-        background-color: #0056b3;
+      background-color: #0056b3;
     }
     .back-button {
       display: block;
@@ -129,7 +144,11 @@
     <div id="questions"></div>
     <button type="submit">محاسبه سبک یادگیری من</button>
   </form>
-  <div id="result" class="result"></div>
+  
+  <div id="result-container" class="result-container" style="display: none;">
+      <div id="result-summary" class="result-summary"></div>
+      <div id="result-details" class="result-details"></div>
+  </div>
 
   <div class="back-button" onclick="window.location.href='index.html'">
     → بازگشت به صفحه اصلی
@@ -182,7 +201,7 @@
         { q: "۴۳) تجسم مکانهایی که در آنها بوده ام برای من:", a: "الف) نسبتاً آسان، کامل و دقیق است.", b: "ب) دشوار، بدون جزئیات و بی دقت است.", dim: "VIS-VRB" },
         { q: "۴۴) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
     ];
-
+    
     const container = document.getElementById("questions");
     questions.forEach((q, i) => {
       const div = document.createElement("div");
@@ -197,69 +216,146 @@
       container.appendChild(div);
     });
 
+    // --- تابع جدید برای تولید توضیحات ---
+    function getExplanation(dimension, score) {
+        const explanations = {
+            "ACT-REF": {
+                positive: "<h3>سبک یادگیری فعال (Active)</h3><p>شما با انجام دادن، بحث کردن و مشارکت در فعالیت‌های گروهی بهتر یاد می‌گیرید. نشستن و گوش دادن صرف برای شما چندان مؤثر نیست. سعی کنید در کلاس مشارکت کنید، با دیگران مطالعه کنید و آموخته‌های خود را به صورت عملی به کار ببرید.</p><p><strong>محتوای مناسب:</strong> کارگاه‌های عملی، پروژه‌های گروهی، بحث و گفتگو، شبیه‌سازی‌ها.</p>",
+                negative: "<h3>سبک یادگیری تأملی (Reflective)</h3><p>شما ترجیح می‌دهید قبل از هر اقدامی، درباره موضوعات به خوبی فکر کنید. یادگیری شما زمانی به اوج می‌رسد که فرصت تفکر و بررسی اطلاعات را به تنهایی داشته باشید. خلاصه‌نویسی و تأمل بر روی یادداشت‌ها برای شما بسیار مفید است.</p><p><strong>محتوای مناسب:</strong> مطالعه فردی، ویدیوهای آموزشی که می‌توانید متوقف کرده و فکر کنید، نوشتن گزارش و خلاصه، حل مسئله به صورت فردی.</p>"
+            },
+            "SEN-INT": {
+                positive: "<h3>سبک یادگیری حسی (Sensing)</h3><p>شما به اطلاعات عینی، واقعی و ملموس علاقه‌مندید. روش‌های اثبات‌شده را ترجیح می‌دهید و در کار با جزئیات دقیق هستید. یادگیری شما از طریق مثال‌های واقعی و کاربردهای عملی بسیار مؤثرتر است.</p><p><strong>محتوای مناسب:</strong> مطالعات موردی (Case studies)، مثال‌های کاربردی، داده‌های واقعی، دستورالعمل‌های گام‌به‌گام، آزمایش‌های عملی.</p>",
+                negative: "<h3>سبک یادگیری شهودی (Intuitive)</h3><p>شما به مفاهیم، نظریه‌ها و ارتباطات بین ایده‌ها علاقه‌مندید. از تکرار بیزارید و از کشف احتمالات جدید و راه‌حل‌های نوآورانه لذت می‌برید. دیدن تصویر کلی و درک ارتباطات برای شما کلیدی است.</p><p><strong>محتوای مناسب:</strong> مباحث مفهومی، طوفان فکری (Brainstorming)، نمودارهای ارتباطی (Mind maps)، مقالات نظری و استراتژیک.</p>"
+            },
+            "VIS-VRB": {
+                positive: "<h3>سبک یادگیری دیداری (Visual)</h3><p>شما اطلاعاتی را که به صورت بصری ارائه می‌شوند، مانند تصاویر، نمودارها، دیاگرام‌ها و ویدیوها، بهتر به خاطر می‌سپارید. برای درک بهتر، سعی کنید اطلاعات متنی را به صورت تصویری برای خود ترسیم کنید.</p><p><strong>محتوای مناسب:</strong> اینفوگرافیک‌ها، نمودارها و جداول، ویدیوهای آموزشی، اسلایدها، نقشه‌های ذهنی.</p>",
+                negative: "<h3>سبک یادگیری کلامی (Verbal)</h3><p>شما توضیحات نوشتاری و گفتاری را ترجیح می‌دهید. از طریق خواندن، نوشتن و بحث کردن به خوبی یاد می‌گیرید. بازگو کردن مطالب برای خود یا دیگران به تثبیت یادگیری شما کمک می‌کند.</p><p><strong>محتوای مناسب:</strong> کتاب‌ها و مقالات، پادکست‌ها، سخنرانی‌ها، بحث‌های گروهی، یادداشت‌برداری متنی.</p>"
+            },
+            "SEQ-GLO": {
+                positive: "<h3>سبک یادگیری توالی‌گرا (Sequential)</h3><p>شما اطلاعات را به صورت گام‌به‌گام و خطی بهتر درک می‌کنید. هر مرحله باید به صورت منطقی به مرحله بعد متصل باشد. داشتن یک مسیر یادگیری مشخص و منظم برای شما ضروری است.</p><p><strong>محتوای مناسب:</strong> آموزش‌های مرحله به مرحله، کتاب‌های درسی با ساختار منظم، حل تمرین‌های متوالی، برنامه‌ریزی درسی.</p>",
+                negative: "<h3>سبک یادگیری کلی‌نگر (Global)</h3><p>شما نیاز دارید ابتدا تصویر کلی و هدف نهایی را ببینید تا بتوانید جزئیات را درک کنید. یادگیری شما ممکن است به صورت جهشی و ناگهانی اتفاق بیفتد. تلاش برای درک ارتباط یک موضوع با سایر حوزه‌ها به شما کمک می‌کند.</p><p><strong>محتوای مناسب:</strong> مرور کلی فصل قبل از مطالعه جزئیات، مقالات مروری، پروژه‌هایی که نیازمند ترکیب ایده‌های مختلف هستند، بررسی کاربردهای نهایی یک موضوع.</p>"
+            }
+        };
+
+        if (score === 0) {
+            return `<p>شما در این بعد سبک یادگیری <strong>متعادلی</strong> دارید و می‌توانید از هر دو روش به خوبی استفاده کنید.</p>`;
+        }
+        return score > 0 ? explanations[dimension].positive : explanations[dimension].negative;
+    }
+
     const form = document.getElementById("quizForm");
-form.onsubmit = function(e) {
-  e.preventDefault();
+    form.onsubmit = function(e) {
+      e.preventDefault();
 
-  const userInfo = {
-    Name: document.getElementById('name').value,
-    Age: document.getElementById('age').value,
-    PhoneNumber: document.getElementById('phoneNumber').value,
-    StudentID: document.getElementById('studentId').value,
-  };
+      const userInfo = {
+        Name: document.getElementById('name').value,
+        Age: document.getElementById('age').value,
+        PhoneNumber: document.getElementById('phoneNumber').value,
+        StudentID: document.getElementById('studentId').value,
+      };
 
-  const individualAnswers = {};
-  const scores = {
-    "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0
-  };
+      const individualAnswers = {};
+      const scores = {
+        "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0
+      };
 
-  questions.forEach((q, i) => {
-    const val = document.querySelector(`input[name='q${i}']:checked`).value;
-    scores[q.dim] += (val === 'a' ? 1 : -1);
-    const questionKey = `Q${i + 1}-${q.dim}`;
-    individualAnswers[questionKey] = val;
-  });
+      questions.forEach((q, i) => {
+        const val = document.querySelector(`input[name='q${i}']:checked`).value;
+        scores[q.dim] += (val === 'a' ? 1 : -1);
+        const questionKey = `Q${i + 1}-${q.dim}`;
+        individualAnswers[questionKey] = val;
+      });
 
-  const calculateStyleAndPercentage = (score, styleA, styleB) => {
-    const totalQuestionsPerDimension = 11;
-    if (score === 0) return "متعادل (Balanced)";
-    const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
-    const dominantStyle = score > 0 ? styleA : styleB;
-    return `${dominantStyle} (${percentage}%)`;
-  };
+      const calculateStyleAndPercentage = (score, styleA, styleB) => {
+        const totalQuestionsPerDimension = 11;
+        if (score === 0) return "متعادل (Balanced)";
+        const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
+        const dominantStyle = score > 0 ? styleA : styleB;
+        return `${dominantStyle} (${percentage}%)`;
+      };
+      
+      const finalResults = {
+        Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال", "تأملی"),
+        Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی", "شهودی"),
+        Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری", "کلامی"),
+        Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا", "کلی‌نگر")
+      };
+      
+      const timestamp = new Date().toISOString();
+      const dataToSubmit = { 
+          Timestamp: timestamp, 
+          ...userInfo,
+          ...individualAnswers, 
+          ...finalResults 
+      };
 
-  const finalResults = {
-    Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأمل‌گرا (Reflective)"),
-    Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
-    Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
-    Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
-  };
+      // --- اصلاح کد fetch برای ارسال صحیح داده‌ها ---
+      fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
+        method: "POST",
+        // mode: "no-cors"  <-- این خط حذف شد تا ارسال داده با موفقیت انجام شود
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSubmit),
+      })
+      .then(response => {
+          if (!response.ok && response.type !== 'opaque') {
+              throw new Error('Network response was not ok');
+          }
+          return response.text();
+      })
+      .then(data => {
+          console.log("Success:", data);
 
-  const dataToSend = {
-    ...userInfo,
-    ...individualAnswers,
-    ...finalResults
-  };
+          // نمایش نتایج و توضیحات
+          const summaryContainer = document.getElementById("result-summary");
+          const detailsContainer = document.getElementById("result-details");
+          const container = document.getElementById("result-container");
+          
+          summaryContainer.innerHTML = `
+              <strong>سبک یادگیری شما:</strong><br>
+              پردازش اطلاعات: <strong>${finalResults.Result_ACT_REF}</strong><br>
+              دریافت اطلاعات: <strong>${finalResults.Result_SEN_INT}</strong><br>
+              شیوه ارائه اطلاعات: <strong>${finalResults.Result_VIS_VRB}</strong><br>
+              سازماندهی اطلاعات: <strong>${finalResults.Result_SEQ_GLO}</strong>
+          `;
 
-  fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
-    method: "POST",
-    mode: "no-cors", // optional: prevents CORS error
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(dataToSend)
-  }).then(() => {
-    document.getElementById("result").innerText = 
-      `سبک یادگیری شما:\n
-      فعالیت: ${finalResults.Result_ACT_REF}\n
-      دریافت اطلاعات: ${finalResults.Result_SEN_INT}\n
-      شیوه ارائه اطلاعات: ${finalResults.Result_VIS_VRB}\n
-      پردازش اطلاعات: ${finalResults.Result_SEQ_GLO}`;
-  }).catch(err => {
-    alert("خطایی در ارسال اطلاعات به Google Sheet رخ داد.");
-    console.error(err);
-  });
-};
+          detailsContainer.innerHTML = `
+              <h2>توضیحات سبک یادگیری شما</h2>
+              ${getExplanation("ACT-REF", scores["ACT-REF"])}
+              ${getExplanation("SEN-INT", scores["SEN-INT"])}
+              ${getExplanation("VIS-VRB", scores["VIS-VRB"])}
+              ${getExplanation("SEQ-GLO", scores["SEQ-GLO"])}
+          `;
+          
+          container.style.display = 'block'; // نمایش کادر نتایج
+          form.style.display = 'none'; // مخفی کردن فرم سوالات
+          
+      }).catch(err => {
+          // در صورت بروز خطا در ارسال، همچنان نتایج به کاربر نمایش داده می‌شود
+          console.error("Fetch Error:", err);
+          alert("خطایی در ارسال اطلاعات به سرور رخ داد، اما نتایج شما محاسبه شده است.");
+          
+          const summaryContainer = document.getElementById("result-summary");
+          const detailsContainer = document.getElementById("result-details");
+          const container = document.getElementById("result-container");
+          
+          summaryContainer.innerHTML = `
+              <strong>سبک یادگیری شما:</strong><br>
+              پردازش اطلاعات: <strong>${finalResults.Result_ACT_REF}</strong><br>
+              دریافت اطلاعات: <strong>${finalResults.Result_SEN_INT}</strong><br>
+              شیوه ارائه اطلاعات: <strong>${finalResults.Result_VIS_VRB}</strong><br>
+              سازماندهی اطلاعات: <strong>${finalResults.Result_SEQ_GLO}</strong>
+          `;
+          detailsContainer.innerHTML = `
+              <h2>توضیحات سبک یادگیری شما</h2>
+              ${getExplanation("ACT-REF", scores["ACT-REF"])}
+              ${getExplanation("SEN-INT", scores["SEN-INT"])}
+              ${getExplanation("VIS-VRB", scores["VIS-VRB"])}
+              ${getExplanation("SEQ-GLO", scores["SEQ-GLO"])}
+          `;
+          container.style.display = 'block';
+          form.style.display = 'none';
+      });
+    };
 
   </script>
 </body>
