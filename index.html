@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Felder-Silverman Learning Style Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 2rem; }
+    h1 { text-align: center; }
+    .question { background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; }
+    .question h3 { margin-bottom: 0.5rem; }
+    .options label { margin-right: 1rem; }
+    .result { margin-top: 2rem; font-size: 1.5rem; font-weight: bold; text-align: center; }
+    button { display: block; margin: 2rem auto; padding: 0.5rem 1rem; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Felder-Silverman Learning Style Test</h1>
+  <form id="quizForm">
+    <div id="questions"></div>
+    <button type="submit">Calculate My Learning Style</button>
+  </form>
+  <div id="result" class="result"></div>
+
+  <script>
+    const questions = [
+      { text: "I understand something better after I try it out.", dimension: "ACT-REF", direction: 1 },
+      { text: "I understand something better after I think it through.", dimension: "ACT-REF", direction: -1 },
+      { text: "I prefer to learn facts.", dimension: "SEN-INT", direction: 1 },
+      { text: "I prefer to learn concepts.", dimension: "SEN-INT", direction: -1 },
+      { text: "I remember best what I see.", dimension: "VIS-VRB", direction: 1 },
+      { text: "I remember best what I hear.", dimension: "VIS-VRB", direction: -1 },
+      { text: "I tend to be neat and orderly.", dimension: "SEQ-GLO", direction: 1 },
+      { text: "I tend to be creative and intuitive.", dimension: "SEQ-GLO", direction: -1 },
+      { text: "I learn by trying things with others.", dimension: "ACT-REF", direction: 1 },
+      { text: "I learn best when I work alone.", dimension: "ACT-REF", direction: -1 },
+      { text: "I like information presented step-by-step.", dimension: "SEQ-GLO", direction: 1 },
+      { text: "I like seeing the big picture first.", dimension: "SEQ-GLO", direction: -1 },
+      { text: "I learn more from pictures and diagrams.", dimension: "VIS-VRB", direction: 1 },
+      { text: "I learn more from spoken explanations.", dimension: "VIS-VRB", direction: -1 },
+      { text: "I am more practical than imaginative.", dimension: "SEN-INT", direction: 1 },
+      { text: "I am more imaginative than practical.", dimension: "SEN-INT", direction: -1 }
+    ];
+
+    const container = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `
+        <h3>Q${i + 1}. ${q.text}</h3>
+        <div class="options">
+          <label><input type="radio" name="q${i}" value="1" required> Strongly Disagree</label>
+          <label><input type="radio" name="q${i}" value="2"> Disagree</label>
+          <label><input type="radio" name="q${i}" value="3"> Neutral</label>
+          <label><input type="radio" name="q${i}" value="4"> Agree</label>
+          <label><input type="radio" name="q${i}" value="5"> Strongly Agree</label>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+
+    const form = document.getElementById("quizForm");
+    form.onsubmit = function(e) {
+      e.preventDefault();
+
+      const scores = {
+        "ACT-REF": 0,
+        "SEN-INT": 0,
+        "VIS-VRB": 0,
+        "SEQ-GLO": 0
+      };
+
+      questions.forEach((q, i) => {
+        const val = parseInt(document.querySelector(`input[name='q${i}']:checked`).value);
+        scores[q.dimension] += q.direction * (val - 3);
+      });
+
+      const getStyle = (score, dimA, dimB) => score >= 0 ? dimA : dimB;
+
+      const resultText = `
+        Your Learning Style is:
+        <br>Active vs Reflective: <strong>${getStyle(scores["ACT-REF"], "Active", "Reflective")}</strong>
+        <br>Sensing vs Intuitive: <strong>${getStyle(scores["SEN-INT"], "Sensing", "Intuitive")}</strong>
+        <br>Visual vs Verbal: <strong>${getStyle(scores["VIS-VRB"], "Visual", "Verbal")}</strong>
+        <br>Sequential vs Global: <strong>${getStyle(scores["SEQ-GLO"], "Sequential", "Global")}</strong>
+      `;
+
+      document.getElementById("result").innerHTML = resultText;
+
+      // Send data to Google Sheets
+      fetch("https://script.google.com/macros/s/AKfycbz82Fd2_RZWKGc-u0i5kO6ODXN3HyOAT2ADF0EbjPUsvyWcsm41dHDyWA4XKkjJ-CJb6w/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ACT_REF: getStyle(scores["ACT-REF"], "Active", "Reflective"),
+          SEN_INT: getStyle(scores["SEN-INT"], "Sensing", "Intuitive"),
+          VIS_VRB: getStyle(scores["VIS-VRB"], "Visual", "Verbal"),
+          SEQ_GLO: getStyle(scores["SEQ-GLO"], "Sequential", "Global")
+        })
+      });
+    };
+  </script>
+</body>
+</html>
