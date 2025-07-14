@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>آزمون شخصیت شناسی MBTI</title>
+  <style>
+    /* Import Vazirmatn font from Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
+
+    body {
+      font-family: 'Vazirmatn', Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 2rem;
+      direction: rtl;
+      color: #333;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #0056b3;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .user-info {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .user-info h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box; /* Important for padding and width */
+      font-family: 'Vazirmatn', sans-serif;
+    }
+    .question {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      text-align: right;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+      text-align: right;
+      cursor: pointer;
+    }
+    .options label:hover {
+        background-color: #f0f8ff;
+    }
+    .options input {
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .result {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #e9f5e9;
+      border: 1px solid #c8e6c9;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      text-align: right;
+      line-height: 1.8;
+      display: none; /* Hidden by default */
+    }
+    .result-summary {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    .result-summary h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #0056b3;
+    }
+    .result-summary p {
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+    }
+    .result-details h3 {
+        text-align: center;
+        font-size: 1.6rem;
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+    .style-description {
+        background: #fdfdfd;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .style-description h4 {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+    }
+    .style-description h5 {
+        font-size: 1.1rem;
+        color: #333;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+    .style-description p, .style-description li {
+        line-height: 1.7;
+    }
+    .style-description ul {
+        padding-right: 20px;
+        margin-top: 0.5rem;
+    }
+    .result hr {
+        border: 0;
+        border-top: 1px solid #c8e6c9;
+        margin: 2rem 0;
+    }
+    button[type="submit"] {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-family: 'Vazirmatn', sans-serif;
+      transition: background-color 0.3s;
+    }
+    button[type="submit"]:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+    button[type="submit"]:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .error-message {
+        color: #D8000C;
+        background-color: #FFD2D2;
+        border: 1px solid #D8000C;
+        border-radius: 5px;
+        padding: 1rem;
+        margin: 1rem auto;
+        text-align: center;
+        display: none; /* Hidden by default */
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>آزمون شخصیت شناسی MBTI</h1>
+  <form id="quizForm">
+    <div class="user-info">
+      <h2>اطلاعات (اختیاری)</h2>
+      <div class="form-group">
+        <label for="name">نام و نام خانوادگی</label>
+        <input type="text" id="name" name="name" placeholder="مثال: سارا محمدی">
+      </div>
+      <div class="form-group">
+        <label for="age">سن</label>
+        <input type="number" id="age" name="age" placeholder="مثال: ۲۵">
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">شماره تلفن</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹">
+      </div>
+      <div class="form-group">
+        <label for="studentId">شماره دانشجویی</label>
+        <input type="text" id="studentId" name="studentId" placeholder="مثال: ۹۸۷۶۵۴۳۲۱">
+      </div>
+    </div>
+    
+    <div id="questions"></div>
+    <button type="submit" id="submitBtn">مشاهده نتیجه آزمون</button>
+  </form>
+  
+  <div id="result" class="result"></div>
+  <div id="errorMessage" class="error-message"></div>
+</div>
+
+  <script>
+    const questions = [
+        // J/P Dimension
+        { q: "۱) وقتی برای یک روز جایی می‌روید، ترجیح می‌دهید:", a: "الف) برای کارها و زمان‌بندی آن برنامه‌ریزی کنید.", b: "ب) فقط بروید و ببینید چه پیش می‌آید.", dim: "JP", val: "a" },
+        // S/N Dimension
+        { q: "۲) اگر معلم بودید، ترجیح می‌دادید کدام نوع دروس را تدریس کنید؟", a: "الف) دروس مبتنی بر واقعیت.", b: "ب) دروس شامل نظریه.", dim: "SN", val: "a" },
+        // E/I Dimension
+        { q: "۳) آیا شما معمولاً فردی هستید که:", a: "الف) به راحتی با دیگران ارتباط برقرار می‌کنید (اجتماعی).", b: "ب) نسبتاً ساکت و خوددار هستید.", dim: "EI", val: "a" },
+        // T/F Dimension
+        { q: "۴) آیا بیشتر اجازه می‌دهید:", a: "الف) قلبتان بر عقلتان حاکم باشد.", b: "ب) عقلتان بر قلبتان حاکم باشد.", dim: "TF", val: "b" },
+        // S/N Dimension
+        { q: "۵) در انجام کاری که دیگران هم انجام می‌دهند، کدام برایتان جذاب‌تر است؟", a: "الف) ابداع روشی مختص به خودتان.", b: "ب) انجام آن به روش پذیرفته شده و مرسوم.", dim: "SN", val: "b" },
+        // E/I Dimension
+        { q: "۶) در میان دوستانتان، آیا شما فردی هستید که:", a: "الف) از همه چیز و همه کس خبر دارید.", b: "ب) از آخرین کسانی هستید که از اتفاقات باخبر می‌شوید.", dim: "EI", val: "a" },
+        // J/P Dimension
+        { q: "۷) آیا ایده تهیه لیستی از کارهایی که باید در آخر هفته انجام دهید:", a: "الف) برایتان جذاب است.", b: "ب) برایتان اهمیتی ندارد یا حتی کسل‌کننده است.", dim: "JP", val: "a" },
+        // J/P Dimension
+        { q: "۸) وقتی کار ویژه‌ای برای انجام دادن دارید، دوست دارید:", a: "الف) قبل از شروع، آن را با دقت سازماندهی کنید.", b: "ب) همزمان با پیشرفت کار، موارد لازم را پیدا کنید.", dim: "JP", val: "a" },
+        // E/I Dimension
+        { q: "۹) آیا تمایل دارید که:", a: "الف) دایره وسیعی از دوستان با افراد مختلف داشته باشید.", b: "ب) دوستی عمیق با تعداد بسیار کمی از افراد داشته باشید.", dim: "EI", val: "a" },
+        // S/N Dimension
+        { q: "۱۰) کدام دسته از افراد را بیشتر تحسین می‌کنید؟", a: "الف) افرادی که به اندازه کافی معمولی هستند تا هرگز جلب توجه نکنند.", b: "ب) افرادی که آنقدر اصیل و منحصر به فرد هستند که برایشان مهم نیست جلب توجه کنند.", dim: "SN", val: "b" },
+        // J/P Dimension
+        { q: "۱۱) آیا ترجیح می‌دهید:", a: "الف) پیک‌نیک، مهمانی و ... را از مدت‌ها قبل برنامه‌ریزی کنید.", b: "ب) آزاد باشید تا در لحظه هر کاری که به نظر سرگرم‌کننده می‌رسد انجام دهید.", dim: "JP", val: "a" },
+        // S/N Dimension
+        { q: "۱۲) معمولاً با کدام دسته از افراد بهتر کنار می‌آیید؟", a: "الف) افراد واقع‌بین.", b: "ب) افراد خیال‌پرداز.", dim: "SN", val: "a" },
+        // E/I Dimension
+        { q: "۱۳) وقتی در یک گروه هستید، معمولاً ترجیح می‌دهید:", a: "الف) به گفتگوی گروهی بپیوندید.", b: "ب) گفتگوی جداگانه‌ای با یک نفر شروع کنید.", dim: "EI", val: "a" },
+        // T/F Dimension
+        { q: "۱۴) به نظر شما کدام یک تعریف بالاتری است؟", a: "الف) یک فرد با احساسات واقعی.", b: "ب) یک فرد همواره منطقی.", dim: "TF", val: "b" },
+        // S/N Dimension
+        { q: "۱۵) هنگام مطالعه برای لذت، آیا:", a: "الف) از روش‌های عجیب و غریب یا اصیل برای بیان مطالب لذت می‌برید.", b: "ب) دوست دارید نویسندگان دقیقاً منظورشان را بیان کنند.", dim: "SN", val: "b" },
+        // E/I Dimension
+        { q: "۱۶) آیا شما:", a: "الف) به راحتی با هر کسی تا هر زمان که لازم باشد صحبت می‌کنید.", b: "ب) فقط با افراد خاص یا در شرایط خاص حرف زیادی برای گفتن دارید.", dim: "EI", val: "a" },
+        // J/P Dimension
+        { q: "۱۷) آیا دنبال کردن یک برنامه زمان‌بندی:", a: "الف) برایتان جذاب است.", b: "ب) شما را محدود می‌کند.", dim: "JP", val: "a" },
+        // J/P Dimension
+        { q: "۱۸) وقتی از مدت‌ها قبل مشخص شده که کار معینی را در زمان معینی انجام دهید، آن را چگونه می‌بینید؟", a: "الف) خوب است که می‌توانم بر اساس آن برنامه‌ریزی کنم.", b: "ب) کمی ناخوشایند است که محدود شوم.", dim: "JP", val: "a" },
+        // J/P Dimension
+        { q: "۱۹) شما در کدام مورد موفق‌تر هستید؟", a: "الف) دنبال کردن یک برنامه با دقت طراحی شده.", b: "ب) مواجهه با موارد غیرمنتظره و تشخیص سریع کاری که باید انجام شود.", dim: "JP", val: "b" },
+        // S/N Dimension
+        { q: "۲۰) ترجیح می‌دهید چه نوع فردی در نظر گرفته شوید؟", a: "الف) یک فرد عمل‌گرا.", b: "ب) یک فرد مبتکر و خلاق.", dim: "SN", val: "a" },
+        // E/I Dimension
+        { q: "۲۱) در یک گروه بزرگ، شما بیشتر:", a: "الف) دیگران را معرفی می‌کنید.", b: "ب) معرفی می‌شوید.", dim: "EI", val: "a" },
+        // T/F Dimension
+        { q: "۲۲) آیا شما معمولاً:", a: "الف) برای احساسات ارزش بیشتری نسبت به منطق قائل هستید.", b: "ب) برای منطق ارزش بیشتری نسبت به احساسات قائل هستید.", dim: "TF", val: "b" },
+        // S/N Dimension
+        { q: "۲۳) ترجیح می‌دهید کدام نوع فردی دوست شما باشد؟", a: "الف) کسی که همیشه ایده‌های جدیدی دارد.", b: "ب) کسی که واقع‌بین است و پاهایش روی زمین است.", dim: "SN", val: "b" },
+        // E/I Dimension
+        { q: "۲۴) آیا افراد جدیدی که ملاقات می‌کنید، می‌توانند بفهمند به چه چیزی علاقه‌مند هستید؟", a: "الف) فوراً.", b: "ب) فقط بعد از اینکه واقعاً شما را بشناسند.", dim: "EI", val: "b" },
+        // J/P Dimension
+        { q: "۲۵) در کار روزانه‌تان، آیا معمولاً:", a: "الف) طوری برنامه‌ریزی می‌کنید که تحت فشار کار نکنید.", b: "ب) از شرایط اضطراری که شما را مجبور به کار در برابر زمان می‌کند، لذت می‌برید.", dim: "JP", val: "a" },
+        // E/I Dimension
+        { q: "۲۶) آیا شما معمولاً:", a: "الف) احساسات خود را آزادانه نشان می‌دهید.", b: "ب) احساسات خود را برای خودتان نگه می‌دارید.", dim: "EI", val: "a" },
+        // Word Pairs
+        { q: "۲۷) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) برنامه‌ریزی شده", b: "ب) بدون برنامه", dim: "JP", val: "a" },
+        { q: "۲۸) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) حقایق", b: "ب) ایده‌ها", dim: "SN", val: "a" },
+        { q: "۲۹) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) ساکت", b: "ب) پرشور", dim: "EI", val: "b" },
+        { q: "۳۰) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) متقاعدکننده", b: "ب) تأثیرگذار (احساسی)", dim: "TF", val: "a" },
+        { q: "۳۱) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) خیال‌پرداز", b: "ب) واقع‌بین", dim: "SN", val: "b" },
+        { q: "۳۲) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) تحلیل کردن", b: "ب) همدردی کردن", dim: "TF", val: "a" },
+        { q: "۳۳) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) سیستماتیک", b: "ب) خودجوش", dim: "JP", val: "a" },
+        { q: "۳۴) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) آرام", b: "ب) پرجنب‌وجوش", dim: "EI", val: "b" },
+        { q: "۳۵) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) عدالت", b: "ب) رحمت", dim: "TF", val: "b" },
+        { q: "۳۶) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) جذاب و شگفت‌انگیز", b: "ب) معقول و منطقی", dim: "SN", val: "b" },
+        { q: "۳۷) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) قاطع", b: "ب) خونگرم", dim: "TF", val: "a" },
+        { q: "۳۸) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) احساس", b: "ب) تفکر", dim: "TF", val: "b" },
+        { q: "۳۹) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) تحت‌اللفظی", b: "ب) مجازی", dim: "SN", val: "b" },
+        { q: "۴۰) کدام کلمه برایتان جذاب‌تر است؟", a: "الف) دوراندیشی", b: "ب) شفقت", dim: "TF", val: "b" },
+    ];
+
+    const mbtiDescriptions = {
+        'ISTJ': { title: 'ISTJ - بازرس', description: 'افرادی ساکت، جدی، مسئولیت‌پذیر و قابل اعتماد. به حقایق اهمیت می‌دهند و در کارشان دقیق و قابل اتکا هستند. آنها به نظم و سنت‌ها احترام می‌گذارند.', strengths: ['دقت بالا', 'مسئولیت‌پذیری', 'صداقت', 'وفاداری'], weaknesses: ['عدم انعطاف‌پذیری', 'لجاجت', 'مشکل در بیان احساسات'] },
+        'ISFJ': { title: 'ISFJ - محافظ', description: 'افرادی خونگرم، وظیفه‌شناس و متعهد. به نیازهای دیگران توجه دارند و از کمک به آنها لذت می‌برند. حافظه خوبی برای جزئیات مربوط به افراد مهم زندگی‌شان دارند.', strengths: ['حمایتگری', 'قابل اعتماد بودن', 'صبر و حوصله', 'عمل‌گرایی'], weaknesses: ['تغییر را دوست ندارند', 'بیش از حد فروتن هستند', 'نیازهای خود را نادیده می‌گیرند'] },
+        'INFJ': { title: "INFJ - حامی", description: 'افرادی آرمان‌گرا، خلاق و با بصیرت. به دنبال معنا و ارتباط در ایده‌ها و روابط هستند. برای ارزش‌های خود زندگی می‌کنند و می‌خواهند به دیگران کمک کنند تا به استعدادهایشان دست یابند.', strengths: ['خلاقیت', 'بصیرت', 'اشتیاق', 'نوع‌دوستی'], weaknesses: ['حساسیت بالا', 'ایده‌آل‌گرایی بیش از حد', 'سخت‌گیری نسبت به خود'] },
+        'INTJ': { title: 'INTJ - معمار', description: 'متفکرانی استراتژیک با برنامه برای همه چیز. منطقی، تحلیل‌گر و مستقل هستند و استانداردهای بالایی برای خود و دیگران دارند. به دنبال بهبود و بهینه‌سازی سیستم‌ها هستند.', strengths: ['تفکر استراتژیک', 'اعتماد به نفس', 'قاطعیت', 'کارآمدی'], weaknesses: ['تکبر', 'عدم تحمل بی‌کفایتی', 'مشکل در مسائل عاطفی'] },
+        'ISTP': { title: 'ISTP - صنعتگر', description: 'افرادی منطقی، کنجکاو و عمل‌گرا. دوست دارند بفهمند چیزها چگونه کار می‌کنند و از حل مشکلات عملی لذت می‌برند. در شرایط بحرانی آرام و خونسرد هستند.', strengths: ['عمل‌گرایی', 'مهارت در حل مسئله', 'خونسردی', 'انعطاف‌پذیری'], weaknesses: ['ریسک‌پذیری بالا', 'عدم علاقه به تعهدات بلندمدت', 'خوددار بودن'] },
+        'ISFP': { title: 'ISFP - هنرمند', description: 'افرادی آرام، حساس و مهربان. در لحظه زندگی می‌کنند و از زیبایی‌های اطرافشان لذت می‌برند. به ارزش‌های خود پایبندند و به فضای شخصی نیاز دارند.', strengths: ['جذابیت', 'حساسیت به زیبایی', 'خلاقیت', 'اشتیاق'], weaknesses: ['استرس‌پذیری بالا', 'رقابت‌گریزی', 'غیرقابل پیش‌بینی بودن'] },
+        'INFP': { title: 'INFP - میانجی', description: 'افرادی آرمان‌گرا، کنجکاو و وفادار به ارزش‌هایشان. می‌خواهند دنیایی بهتر بسازند و به دنبال درک عمیق خود و دیگران هستند. خلاق و پذیرا هستند.', strengths: ['نوع‌دوستی', 'خلاقیت', 'ایده‌آل‌گرایی', 'وفاداری'], weaknesses: ['غیرعملی بودن', 'خودانتقادگری', 'مشکل در کار با داده‌ها'] },
+        'INTP': { title: 'INTP - منطق‌دان', description: 'افرادی تشنه دانش که به دنبال توضیح منطقی برای همه چیز هستند. ساکت، متفکر و تحلیل‌گرند و بیشتر به ایده‌ها علاقه‌مندند تا تعاملات اجتماعی.', strengths: ['تحلیل‌گری', 'ذهن باز', 'خلاقیت', 'صداقت'], weaknesses: ['عدم درک احساسات دیگران', 'حواس‌پرتی', 'دودلی و عدم قاطعیت'] },
+        'ESTP': { title: 'ESTP - کارآفرین', description: 'افرادی اجتماعی، عمل‌گرا و پرانرژی. دوست دارند در مرکز توجه باشند و از ریسک کردن لذت می‌برند. در لحظه زندگی می‌کنند و به سرعت برای حل مشکلات اقدام می‌کنند.', strengths: ['جسارت', 'اجتماعی بودن', 'عمل‌گرایی', 'هوشمندی'], weaknesses: ['عدم حساسیت به دیگران', 'بی‌حوصلگی', 'ریسک‌پذیری زیاد'] },
+        'ESFP': { title: 'ESFP - سرگرم‌کننده', description: 'افرادی پرشور، اجتماعی و خودجوش. عاشق زندگی، مردم و لذت‌های مادی هستند. دوست دارند دیگران را شاد کنند و از تجربیات جدید استقبال می‌کنند.', strengths: ['خلاقیت', 'اجتماعی بودن', 'شوخ‌طبعی', 'عمل‌گرایی'], weaknesses: ['عدم علاقه به برنامه‌ریزی', 'تمرکز ضعیف', 'حساسیت به انتقاد'] },
+        'ENFP': { title: 'ENFP - قهرمان', description: 'افرادی خلاق، پرانرژی و خوش‌بین. به راحتی با دیگران ارتباط برقرار می‌کنند و از حمایت و تشویق آنها لذت می‌برند. به دنبال کشف امکانات جدید هستند.', strengths: ['کنجکاوی', 'اشتیاق', 'مهارت‌های ارتباطی عالی', 'خوش‌بینی'], weaknesses: ['عدم تمرکز', 'تفکر بیش از حد', 'استرس‌پذیری'] },
+        'ENTP': { title: 'ENTP - مناظره‌گر', description: 'افرادی باهوش، کنجکاو و مبتکر که از به چالش کشیدن ایده‌ها لذت می‌برند. در بحث و مناظره مهارت دارند و به سرعت الگوها را تشخیص می‌دهند.', strengths: ['دانش زیاد', 'تفکر سریع', 'کاریزما', 'پرانرژی بودن'], weaknesses: ['عدم تحمل', 'عدم تمرکز', 'علاقه‌مند به بحث و جدل'] },
+        'ESTJ': { title: 'ESTJ - مدیر اجرایی', description: 'افرادی عمل‌گرا، قاطع و سازمان‌یافته. در مدیریت کارها و افراد مهارت دارند و دوست دارند همه چیز طبق برنامه پیش برود. به سنت‌ها و قوانین احترام می‌گذارند.', strengths: ['تعهد', 'اراده قوی', 'صداقت', 'مهارت‌های رهبری'], weaknesses: ['عدم انعطاف‌پذیری', 'عدم راحتی با شرایط غیرمعمول', 'مشکل در بیان احساسات'] },
+        'ESFJ': { title: 'ESFJ - سفیر', description: 'افرادی اجتماعی، خونگرم و وظیفه‌شناس. از کمک به دیگران لذت می‌برند و دوست دارند مورد قدردانی قرار گیرند. در ایجاد هماهنگی و همکاری در گروه مهارت دارند.', strengths: ['مهارت‌های عملی قوی', 'وظیفه‌شناسی', 'وفاداری', 'حساسیت به نیازهای دیگران'], weaknesses: ['نگرانی درباره جایگاه اجتماعی', 'عدم انعطاف‌پذیری', 'آسیب‌پذیری در برابر انتقاد'] },
+        'ENFJ': { title: 'ENFJ - راهنما', description: 'افرادی کاریزماتیک، الهام‌بخش و مسئولیت‌پذیر. به نیازها و انگیزه‌های دیگران حساس هستند و می‌توانند استعدادهای بالقوه آنها را شکوفا کنند. رهبرانی طبیعی هستند.', strengths: ['قابل اعتماد بودن', 'اشتیاق', 'نوع‌دوستی', 'رهبری ذاتی'], weaknesses: ['ایده‌آل‌گرایی بیش از حد', 'حساسیت زیاد', 'دودلی در تصمیم‌گیری'] },
+        'ENTJ': { title: 'ENTJ - فرمانده', description: 'رهبرانی قاطع، با اعتماد به نفس و استراتژیک. به سرعت ناکارآمدی‌ها را تشخیص داده و راه‌حل‌های منطقی ارائه می‌دهند. از به عهده گرفتن مسئولیت لذت می‌برند.', strengths: ['کارآمدی', 'اراده قوی', 'اعتماد به نفس', 'تفکر استراتژیک'], weaknesses: ['لجاجت و عدم تحمل', 'بی‌صبری', 'مشکل در مدیریت احساسات'] }
+    };
+
+    const container = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `
+        <h3>${q.q}</h3>
+        <div class="options">
+          <label><input type="radio" name="q${i}" value="a" required> ${q.a}</label>
+          <label><input type="radio" name="q${i}" value="b" required> ${q.b}</label>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+
+    const form = document.getElementById("quizForm");
+    const submitBtn = document.getElementById('submitBtn');
+    const resultDiv = document.getElementById('result');
+    const errorDiv = document.getElementById('errorMessage');
+
+    form.onsubmit = function(e) {
+      e.preventDefault();
+
+      const totalAnswered = document.querySelectorAll('input[type="radio"]:checked').length;
+      if (totalAnswered < questions.length) {
+          errorDiv.innerText = "لطفاً به تمام سوالات پاسخ دهید.";
+          errorDiv.style.display = 'block';
+          window.scrollTo(0, 0);
+          return;
+      }
+      
+      errorDiv.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'در حال ارسال...';
+
+      const scores = { "EI": 0, "SN": 0, "TF": 0, "JP": 0 };
+      const individualAnswers = {};
+
+      questions.forEach((q, i) => {
+        const selectedValue = document.querySelector(`input[name='q${i}']:checked`).value;
+        individualAnswers[`Q${i + 1}`] = selectedValue;
+        
+        if (q.val === 'a') {
+            scores[q.dim] += (selectedValue === 'a' ? 1 : -1);
+        } else {
+            scores[q.dim] += (selectedValue === 'b' ? 1 : -1);
+        }
+      });
+
+      const resultType = 
+        (scores.EI >= 0 ? 'E' : 'I') +
+        (scores.SN >= 0 ? 'S' : 'N') +
+        (scores.TF >= 0 ? 'T' : 'F') +
+        (scores.JP >= 0 ? 'J' : 'P');
+
+      // Prepare data for Google Sheet
+      const userInfo = {
+        Name: document.getElementById('name').value,
+        Age: document.getElementById('age').value,
+        PhoneNumber: document.getElementById('phoneNumber').value,
+        StudentID: document.getElementById('studentId').value,
+      };
+      const timestamp = new Date().toLocaleString('en-US');
+      const dataToSend = { 
+        Timestamp: timestamp,
+        ...userInfo, 
+        ...individualAnswers,
+        Results: resultType, // Changed from ResultType to Results to match script
+      };
+
+      // Send data to Google Sheet
+      const webAppUrl = "https://script.google.com/macros/s/AKfycbwjk3H86Fu20OPFHrOGKc_41mBiZ1fQTVPZupqVODDMmClNDH_KOHiJzYcl67IUc73E/exec"; 
+      fetch(webAppUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dataToSend)
+      }).then(() => {
+        // This block runs after the request is sent.
+        // Now, display the results to the user.
+        const typeInfo = mbtiDescriptions[resultType];
+
+        let strengthsHtml = '<ul>';
+        typeInfo.strengths.forEach(s => { strengthsHtml += `<li>${s}</li>`; });
+        strengthsHtml += '</ul>';
+
+        let weaknessesHtml = '<ul>';
+        typeInfo.weaknesses.forEach(w => { weaknessesHtml += `<li>${w}</li>`; });
+        weaknessesHtml += '</ul>';
+
+        const resultHtml = `
+          <div class="result-summary">
+            <p>تیپ شخصیتی شما:</p>
+            <h3>${typeInfo.title} (${resultType})</h3>
+          </div>
+          <hr>
+          <div class="result-details">
+            <div class="style-description">
+              <h4>توضیحات کلی</h4>
+              <p>${typeInfo.description}</p>
+              <h5>نقاط قوت:</h5>
+              ${strengthsHtml}
+              <h5>نقاط ضعف احتمالی:</h5>
+              ${weaknessesHtml}
+            </div>
+          </div>
+        `;
+        
+        resultDiv.innerHTML = resultHtml;
+        resultDiv.style.display = 'block';
+        form.style.display = 'none';
+        submitBtn.innerText = 'ارسال با موفقیت انجام شد';
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
+
+      }).catch(err => {
+        // This block runs if the fetch request fails.
+        errorDiv.innerText = "خطایی در ارسال اطلاعات به سرور رخ داد. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.";
+        errorDiv.style.display = 'block';
+        console.error("Could not send data to Google Sheet:", err);
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'مشاهده نتیجه آزمون';
+      });
+    };
+  </script>
+</body>
+</html>
