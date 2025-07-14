@@ -1,448 +1,448 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>آزمون سبک یادگیری فلدر-سیلورمن</title>
-  <style>
-    /* Import Vazirmatn font from Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
+  <!DOCTYPE html>
+  <html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>آزمون سبک یادگیری فلدر-سیلورمن</title>
+    <style>
+      /* Import Vazirmatn font from Google Fonts */
+      @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
 
-    body {
-      font-family: 'Vazirmatn', Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 2rem;
-      direction: rtl;
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    .user-info {
-      background: white;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .user-info h2 {
-      margin-top: 0;
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
-    }
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box; /* Important for padding and width */
-      font-family: 'Vazirmatn', sans-serif;
-    }
-    .question {
-      background: white;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .question h3 {
-      margin-bottom: 1rem;
-      text-align: right;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-    .options label {
-      display: block;
-      margin-bottom: 0.5rem;
-      text-align: right;
-      cursor: pointer;
-    }
-    .options input {
-      margin-left: 0.5rem;
-    }
-    .result {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background: #e9f5e9;
-      border: 1px solid #c8e6c9;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      text-align: right;
-      line-height: 1.8;
-      display: none; /* Hidden by default */
-    }
-    .result-summary {
+      body {
+        font-family: 'Vazirmatn', Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 2rem;
+        direction: rtl;
+      }
+      h1, h2 {
         text-align: center;
-        margin-bottom: 1.5rem;
-    }
-    .result-summary h3 {
-        font-size: 1.6rem;
-        margin-bottom: 1rem;
-        color: #333;
-    }
-    .result-summary p {
-        font-size: 1.2rem;
-        margin: 0.5rem 0;
-    }
-    .result-details h3 {
-        text-align: center;
-        font-size: 1.6rem;
-        margin-top: 2rem;
-        margin-bottom: 1.5rem;
-        color: #333;
-    }
-    .style-description {
-        background: #fdfdfd;
-        border: 1px solid #e0e0e0;
+      }
+      .user-info {
+        background: white;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
         border-radius: 8px;
-        padding: 1rem 1.5rem;
-        margin-bottom: 1rem;
-    }
-    .style-description h4 {
-        font-size: 1.3rem;
-        color: #0056b3;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .user-info h2 {
         margin-top: 0;
-        margin-bottom: 0.75rem;
-    }
-    .style-description p {
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: block;
         margin-bottom: 0.5rem;
-    }
-    .style-description ul {
-        padding-right: 20px;
-        margin-top: 0.5rem;
-    }
-    .result hr {
-        border: 0;
-        border-top: 1px solid #c8e6c9;
-        margin: 2rem 0;
-    }
-    button[type="submit"] {
-      display: block;
-      margin: 2rem auto;
-      padding: 0.8rem 1.5rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-family: 'Vazirmatn', sans-serif;
-      transition: background-color 0.3s;
-    }
-    button[type="submit"]:hover:not(:disabled) {
-      background-color: #0056b3;
-    }
-    button[type="submit"]:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-    }
-    .back-button {
-      display: block;
-      margin: 2rem auto;
-      text-align: center;
-      color: #007bff;
-      cursor: pointer;
-      text-decoration: underline;
-      font-size: 1rem;
-      max-width: 150px;
-    }
-    .back-button:hover {
-      color: #0056b3;
-    }
-    .error-message {
-        color: #D8000C;
-        background-color: #FFD2D2;
-        border: 1px solid #D8000C;
-        border-radius: 5px;
-        padding: 1rem;
-        margin: 1rem auto;
-        text-align: center;
+        font-weight: bold;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* Important for padding and width */
+        font-family: 'Vazirmatn', sans-serif;
+      }
+      .question {
+        background: white;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .question h3 {
+        margin-bottom: 1rem;
+        text-align: right;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+      .options label {
+        display: block;
+        margin-bottom: 0.5rem;
+        text-align: right;
+        cursor: pointer;
+      }
+      .options input {
+        margin-left: 0.5rem;
+      }
+      .result {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #e9f5e9;
+        border: 1px solid #c8e6c9;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        text-align: right;
+        line-height: 1.8;
         display: none; /* Hidden by default */
-    }
-  </style>
-</head>
-<body>
-  <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
-  <form id="quizForm">
-    <div class="user-info">
-      <h2>اطلاعات (اختیاری)</h2>
-      <div class="form-group">
-        <label for="name">نام و نام خانوادگی</label>
-        <input type="text" id="name" name="name" placeholder="مثال: مریم رضایی">
-      </div>
-      <div class="form-group">
-        <label for="age">سن</label>
-        <input type="number" id="age" name="age" placeholder="مثال: ۲۱">
-      </div>
-      <div class="form-group">
-        <label for="phoneNumber">شماره تلفن</label>
-        <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹">
-      </div>
-      <div class="form-group">
-        <label for="studentId">شماره دانشجویی</label>
-        <input type="text" id="studentId" name="studentId" placeholder="مثال: ۹۸۷۶۵۴۳۲۱">
-      </div>
-    </div>
-    
-    <div id="questions"></div>
-    <button type="submit" id="submitBtn">محاسبه سبک یادگیری من</button>
-  </form>
-  
-  <div id="result" class="result"></div>
-  <div id="errorMessage" class="error-message"></div>
-
-  <div class="back-button" onclick="window.location.href='index.html'">
-    → بازگشت به صفحه اصلی
-  </div>
-
-  <script>
-    const questions = [
-        { q: "۱) هنگامی مطلب را بهتر می فهمیم که:", a: "الف) آن را آزمایش می کنم.", b: "ب) درباره آن کاملاً فکر می کنم.", dim: "ACT-REF" },
-        { q: "۲) ترجیح می دهم:", a: "الف) واقع بین به نظر برسم.", b: "ب) مبتکر به نظر برسم.", dim: "SEN-INT" },
-        { q: "۳) وقتی به آنچه دیروز انجام داده ام فکر می کنم، بیشتر:", a: "الف) آن را به صورت تصویر به یاد می آورم.", b: "ب) آن را به صورت کلمات به یاد می آورم.", dim: "VIS-VRB" },
-        { q: "۴) معمولاً:", a: "الف) جزئیات موضوع را می فهمم، اما درباره ساختار کلی آن گیج می شوم.", b: "ب) ساختار کلی موضوع را می فهمم، اما درباره جزئیات آن گیج می شوم.", dim: "SEQ-GLO" },
-        { q: "۵) برای یادگیری هر چیز تازه:", a: "الف) صحبت کردن درباره آن به من کمک می کند.", b: "ب) فکر کردن درباره آن به من کمک می کند.", dim: "ACT-REF" },
-        { q: "۶) اگر معلم شوم، ترجیح می دهم درسی بدهم که:", a: "الف) با حقایق زندگی سروکار داشته باشد.", b: "ب) با عقاید و نظریه ها سروکار داشته باشد.", dim: "SEN-INT" },
-        { q: "۷) ترجیح می دهم مطالب جدید را از طریق:", a: "الف) تصاویر، جدولها و نقشه ها یاد بگیرم.", b: "ب) دستورالعملهای مکتوب یا اطلاعات شفاهی یاد بگیرم.", dim: "VIS-VRB" },
-        { q: "۸) وقتی:", a: "الف) همه اجزای مطلب را بفهمم، کل مطلب را می فهمم.", b: "ب) کل مطلب را بفهمم، همه اجزای آن را می فهمم.", dim: "SEQ-GLO" },
-        { q: "۹) در میان گروهی که مسئله دشواری را بررسی می کنند، من به احتمال زیاد:", a: "الف) وارد بحث می شوم و عقیده ام را بیان می کنم.", b: "ب) در گوشه ای می نشینم و گوش می دهم.", dim: "ACT-REF" },
-        { q: "۱۰) یادگیری:", a: "الف) واقعیات را آسان تر می دانم.", b: "ب) مفاهیم را آسان تر می دانم.", dim: "SEN-INT" },
-        { q: "۱۱) هنگام مطالعه کتابی که تصاویر و شکلهای بسیار زیادی دارد، به احتمال زیاد:", a: "الف) تصاویر و نمودارها را به دقت بررسی می کنم.", b: "ب) توجه خود را به نوشته های کتاب معطوف می کنم.", dim: "VIS-VRB" },
-        { q: "۱۲) هنگام حل مسائل ریاضی:", a: "الف) معمولاً مرحله به مرحله روی راه حلهایی که به جواب می رسند کار می کنم.", b: "ب) غالباً ابتدا راه حلها را بررسی می کنم و سپس سعی می کنم مراحلی که برای رسیدن به آنها لازم است بیابم.", dim: "SEQ-GLO" },
-        { q: "۱۳) وقتی در کلاسی شرکت می کنم:", a: "الف) معمولاً با بسیاری از دانش آموزان آشنا می شوم.", b: "ب) معمولاً با تعداد کمی از دانش آموزان آشنا می شوم.", dim: "ACT-REF" },
-        { q: "۱۴) در مطالعه مطالب واقعی، ترجیح می دهم مطالب:", a: "الف) چیزهای جدیدی به من بیاموزند یا به من چگونگی انجام دادن کارها را یاد بدهند.", b: "ب) ایده های جدیدی برای فکر کردن درباره آنها در اختیار من بگذراند.", dim: "SEN-INT" },
-        { q: "۱۵) معلمانی را دوست دارم که هنگام درس دادن:", a: "الف) جدولها و نمودارهای زیادی روی تخته می کشند.", b: "ب) زمان زیادی را صرف توضیح دادن می کنند.", dim: "VIS-VRB" },
-        { q: "۱۶) هنگام تحلیل داستان یا رمان:", a: "الف) به اتفاقات داستان فکر می کنم و می کوشم آنها را به منظور فهم موضوع اصلی داستان به یکدیگر مرتبط سازم.", b: "ب) چون وقتی که داستان را تمام می کنم فقط موضوع اصلی آن را به خاطر می آورم، باید به عقب برگردم و رابطه بین اتفاقهای داستان را پیدا کنم.", dim: "SEQ-GLO" },
-        { q: "۱۷) وقتی حل مسئله را شروع می کنم، به احتمال زیاد:", a: "الف) بلافاصله روی راه حل آن کار می کنم.", b: "ب) ابتدا سعی می کنم مسئله را کاملاً بفهمم.", dim: "ACT-REF" },
-        { q: "۱۸) بیشتر:", a: "الف) عقاید قطعی را ترجیح می دهم.", b: "ب) فرضیات را ترجیح می دهم.", dim: "SEN-INT" },
-        { q: "۱۹) آنچه را:", a: "الف) می بینم بهتر به یاد می آورم.", b: "ب) می شنوم بهتر به یاد می آورم.", dim: "VIS-VRB" },
-        { q: "۲۰) برای من خیلی مهم است که معلم:", a: "الف) مطالب را با نظم و ترتیب روشن ارائه دهد.", b: "ب) تصویری کلی از مطالب را ارائه دهد و آن را با موضوعات دیگر مرتبط سازد.", dim: "SEQ-GLO" },
-        { q: "۲۱) ترجیح می دهم:", a: "الف) در گروه مطالعه کنم.", b: "ب) به تنهایی مطالعه کنم.", dim: "ACT-REF" },
-        { q: "۲۲) بیشتر ترجیح می دهم:", a: "الف) درباره جزئیات کار دقیق باشم.", b: "ب) در چگونگی انجام دادن کار خلاق باشم.", dim: "SEN-INT" },
-        { q: "۲۳) برای پیدا کردن محلی ناآشنا:", a: "الف) استفاده از نقشه را ترجیح می دهم.", b: "ب) استفاده از آدرس مکتوب را ترجیح می دهم.", dim: "VIS-VRB" },
-        { q: "۲۴) مطالب را:", a: "الف) در مراحل نسبتاً منظم و با تلاش زیاد یاد می گیرم.", b: "ب) در ابتدا خوب نمی فهمم و کاملاً گیج می شوم، اما ناگهان آن را یاد می گیرم.", dim: "SEQ-GLO" },
-        { q: "۲۵) ترجیح می دهم ابتدا:", a: "الف) کارها را انجام دهم.", b: "ب) در باره چگونگی انجام دادن کارها فکر کنم.", dim: "ACT-REF" },
-        { q: "۲۶) وقتی برای سرگرمی مطالعه می کنم، نویسندگانی را ترجیح می دهم که:", a: "الف) به روشنی منظورشان را بیان می کنند.", b: "ب) مطالب را به روشهای جالب و خلاق بیان می کنند.", dim: "SEN-INT" },
-        { q: "۲۷) وقتی در کلاس تصویر یا شکلی می بینم، احتمال زیادی وجود دارد که:", a: "الف) تصویر یا شکل را به یاد بیاورم.", b: "ب) توضیحات معلم درباره تصویر یا شکل را به یاد بیاورم.", dim: "VIS-VRB" },
-        { q: "۲۸) هنگامی که با اطلاعات زیادی مواجه می شوم به احتمال زیاد:", a: "الف) به جزئیات توجه می کنم و اصل مطلب را از دست می دهم.", b: "ب) سعی می کنم، قبل از پرداختن به جزئیات، اصل مطلب را بفهمم.", dim: "SEQ-GLO" },
-        { q: "۲۹) یادآوری:", a: "الف) آنچه را انجام داده ام آسان تر می دانم.", b: "ب) آنچه را درباره اش زیاد فکر کرده ام، آسان تر می دانم.", dim: "ACT-REF" },
-        { q: "۳۰) وقتی باید کاری انجام دهم، ترجیح می دهم:", a: "الف) برای انجام دادن آن در یکی از روشهای موجود مهارت کسب کنم.", b: "ب) روشهای جدیدی ابداع کنم و به کار گیرم.", dim: "SEN-INT" },
-        { q: "۳۱) وقتی فردی متنی به من نشان می دهد:", a: "الف) شکلها و تصاویر آن را ترجیح می دهم.", b: "ب) خلاصه متن و نتایج آن را ترجیح می دهم.", dim: "VIS-VRB" },
-        { q: "۳۲) برای تدوین مقاله، به احتمال زیاد:", a: "الف) نگارش مقاله را از ابتدا شروع می کنم و با رعایت ترتیب بخشها ادامه می دهم.", b: "ب) بخشهای مختلف مقاله را بدون توجه به ترتیب آنها آماده و سپس مرتب می کنم.", dim: "SEQ-GLO" },
-        { q: "۳۳) وقتی باید با دیگران به صورت گروهی کار کنم، مایلم در آغاز:", a: "الف) هر یک از افراد گروه عقاید و نظرهایشان را مطرح کنند.", b: "ب) افراد عقاید خود را ابتدا به صورت انفرادی بررسی و سپس در گروه مطرح کنند.", dim: "ACT-REF" },
-        { q: "۳۴) به نظر من بالاترین تمجید آن است که فرد را:", a: "الف) معقول بدانیم.", b: "ب) دارای تخیل قوی بدانیم.", dim: "SEN-INT" },
-        { q: "۳۵) اگر افرادی را در میهمانی ملاقات کنم، احتمال زیادی وجود دارد که:", a: "الف) چهره آنها را به یاد بیاورم.", b: "ب) آنچه را درباره خودشان گفته اند به یاد بیاورم.", dim: "VIS-VRB" },
-        { q: "۳۶) وقتی موضوع جدیدی یاد می گیرم، ترجیح می دهم:", a: "الف) بر آن متمرکز شوم و تا آنجا که می توانم درباره آن مطالبی یاد بگیرم.", b: "ب) آن موضوع را با موضعهای دیگر مرتبط کنم.", dim: "SEQ-GLO" },
-        { q: "۳۷) به نظر دیگران، من:", a: "الف) خوش برخورد به شمار می آیم.", b: "ب) خوددار به شمار می آیم.", dim: "ACT-REF" },
-        { q: "۳۸) دروسی را ترجیح می دهم که بر:", a: "الف) موضوعات عینی مانند واقعیات و اطلاعات متمرکز باشند.", b: "ب) موضوعات انتزاعی مانند مفاهیم و نظریه ها متمرکز باشند.", dim: "SEN-INT" },
-        { q: "۳۹) برای سرگرمی، ترجیح می دهم:", a: "الف) تلویزیون تماشا کنم.", b: "ب) کتاب بخوانم.", dim: "VIS-VRB" },
-        { q: "۴۰) بعضی از معلمان درس خود را با خلاصه ای از موضوع مورد بحث شروع می کنند، این خلاصه ها برای من:", a: "الف) کمی مفید هستند.", b: "ب) بسیار مفید هستند.", dim: "SEQ-GLO" },
-        { q: "۴۱) وقتی تکلیف به صورت گروهی انجام می شود، اختصاص یک نمره برای کل گروه:", a: "الف) درست است.", b: "ب) درست نیست.", dim: "ACT-REF" },
-        { q: "۴۲) در محاسبات طولانی، تمایل به:", a: "الف) مرور تمامی مراحل و کنترل دقیق محاسبات دارم.", b: "ب) مرور تمامی مراحل و کنترل دقیق محاسبات ندارم و باید خود را مجبور به انجام دادن آن کنم.", dim: "SEN-INT" },
-        { q: "۴۳) تجسم مکانهایی که در آنها بوده ام برای من:", a: "الف) نسبتاً آسان، کامل و دقیق است.", b: "ب) دشوار، بدون جزئیات و بی دقت است.", dim: "VIS-VRB" },
-        { q: "۴۴) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
-    ];
-
-    const learningStyleDescriptions = {
-        'Active': {
-            title: 'فعال (Active)',
-            description: 'شما از طریق «انجام دادن»، مشارکت فعال در بحث‌ها و به‌کارگیری مفاهیم، بهترین یادگیری را تجربه می‌کنید.',
-            strategies: [
-                'در گروه‌های مطالعه شرکت کنید و مفاهیم را برای دیگران توضیح دهید.',
-                'برای هر موضوع، مثال‌های عملی و کاربردی پیدا کنید.',
-                'هنگام مطالعه، به جای نشستن طولانی، در فواصل کوتاه فعالیت فیزیکی داشته باشید.'
-            ]
-        },
-        'Reflective': {
-            title: 'تأمل‌گرا (Reflective)',
-            description: 'شما ترجیح می‌دهید ابتدا اطلاعات را در ذهن خود پردازش کرده و درباره‌ی آن عمیقاً فکر کنید.',
-            strategies: [
-                'پس از هر کلاس یا جلسه مطالعه، زمانی را به مرور و فکر کردن به مطالب اختصاص دهید.',
-                'خلاصه‌نویسی از آموخته‌هایتان به درک عمیق‌تر کمک می‌کند.',
-                'قبل از شروع حل مسئله، تمام جوانب آن را با دقت بررسی کنید.'
-            ]
-        },
-        'Sensing': {
-            title: 'حسی (Sensing)',
-            description: 'شما به اطلاعات ملموس، واقعیت‌ها و رویه‌های اثبات‌شده علاقه‌مند هستید و به جزئیات توجه زیادی دارید.',
-            strategies: [
-                'از استاد یا منابع درسی، مثال‌های واقعی و کاربردی درخواست کنید.',
-                'مفاهیم درسی را به تجربیات عملی خود مرتبط سازید.',
-                'در کارهای آزمایشگاهی و عملی مهارت بالایی دارید؛ از این فرصت‌ها استفاده کنید.'
-            ]
-        },
-        'Intuitive': {
-            title: 'شهودی (Intuitive)',
-            description: 'شما به کشف روابط، ایده‌های نو و مفاهیم انتزاعی علاقه‌مندید و از کارهای تکراری و حفظ‌کردنی بیزارید.',
-            strategies: [
-                'به دنبال درک تصویر کلی و ارتباط بین مفاهیم مختلف باشید.',
-                'از منابعی استفاده کنید که نظریه‌ها و ایده‌های اصلی را توضیح می‌دهند.',
-                'مراقب باشید که در آزمون‌ها به دلیل بی‌توجهی به جزئیات، امتیاز از دست ندهید.'
-            ]
-        },
-        'Visual': {
-            title: 'دیداری (Visual)',
-            description: 'شما اطلاعاتی را که به صورت بصری ارائه می‌شوند (مانند نمودار، دیاگرام و تصویر) بهتر به خاطر می‌سپارید.',
-            strategies: [
-                'اطلاعات متنی را به صورت نقشه‌های ذهنی (Mind Map)، فلوچارت و جدول تبدیل کنید.',
-                'از رنگ‌های مختلف برای هایلایت کردن و دسته‌بندی مطالب استفاده کنید.',
-                'ویدیوهای آموزشی و منابع تصویری را جایگزین منابع صرفاً متنی کنید.'
-            ]
-        },
-        'Verbal': {
-            title: 'کلامی (Verbal)',
-            description: 'شما از طریق خواندن، نوشتن و توضیحات گفتاری (شنیداری و بیانی) بهترین یادگیری را دارید.',
-            strategies: [
-                'مطالب را با صدای بلند برای خود یا دیگران تکرار کنید.',
-                'در بحث‌های کلاسی و گروه‌های مطالعه فعالانه شرکت کنید.',
-                'خلاصه‌نویسی و بازنویسی مفاهیم با کلمات خودتان بسیار مؤثر است.'
-            ]
-        },
-        'Sequential': {
-            title: 'توالی‌گرا (Sequential)',
-            description: 'شما اطلاعات را به صورت مرحله به مرحله و در یک توالی منطقی و منظم بهتر درک می‌کنید.',
-            strategies: [
-                'برای مطالب درسی، یک طرح کلی و فهرست‌وار (Outline) تهیه کنید.',
-                'مطمئن شوید که هر مرحله را به خوبی یاد گرفته‌اید و سپس به مرحله بعد بروید.',
-                'از معلم بخواهید که ارتباط منطقی بین بخش‌های مختلف درس را توضیح دهد.'
-            ]
-        },
-        'Global': {
-            title: 'کلی‌نگر (Global)',
-            description: 'شما نیاز دارید ابتدا تصویر کلی و هدف نهایی را ببینید. یادگیری شما اغلب به صورت جهشی و ناگهانی اتفاق می‌افتد.',
-            strategies: [
-                'قبل از خواندن دقیق یک فصل، آن را به سرعت ورق بزنید تا یک دید کلی به دست آورید.',
-                'سعی کنید مطالب جدید را به موضوعاتی که از قبل می‌دانید، مرتبط سازید.',
-                'اگر در ابتدا احساس سردرگمی کردید، نگران نشوید. به زودی تصویر کلی برایتان روشن خواهد شد.'
-            ]
-        }
-    };
-
-    const container = document.getElementById("questions");
-    questions.forEach((q, i) => {
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `
-        <h3>${q.q}</h3>
-        <div class="options">
-          <label><input type="radio" name="q${i}" value="a" required> ${q.a}</label>
-          <label><input type="radio" name="q${i}" value="b" required> ${q.b}</label>
+      }
+      .result-summary {
+          text-align: center;
+          margin-bottom: 1.5rem;
+      }
+      .result-summary h3 {
+          font-size: 1.6rem;
+          margin-bottom: 1rem;
+          color: #333;
+      }
+      .result-summary p {
+          font-size: 1.2rem;
+          margin: 0.5rem 0;
+      }
+      .result-details h3 {
+          text-align: center;
+          font-size: 1.6rem;
+          margin-top: 2rem;
+          margin-bottom: 1.5rem;
+          color: #333;
+      }
+      .style-description {
+          background: #fdfdfd;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 1rem 1.5rem;
+          margin-bottom: 1rem;
+      }
+      .style-description h4 {
+          font-size: 1.3rem;
+          color: #0056b3;
+          margin-top: 0;
+          margin-bottom: 0.75rem;
+      }
+      .style-description p {
+          margin-bottom: 0.5rem;
+      }
+      .style-description ul {
+          padding-right: 20px;
+          margin-top: 0.5rem;
+      }
+      .result hr {
+          border: 0;
+          border-top: 1px solid #c8e6c9;
+          margin: 2rem 0;
+      }
+      button[type="submit"] {
+        display: block;
+        margin: 2rem auto;
+        padding: 0.8rem 1.5rem;
+        font-size: 1.2rem;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Vazirmatn', sans-serif;
+        transition: background-color 0.3s;
+      }
+      button[type="submit"]:hover:not(:disabled) {
+        background-color: #0056b3;
+      }
+      button[type="submit"]:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+      .back-button {
+        display: block;
+        margin: 2rem auto;
+        text-align: center;
+        color: #007bff;
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 1rem;
+        max-width: 150px;
+      }
+      .back-button:hover {
+        color: #0056b3;
+      }
+      .error-message {
+          color: #D8000C;
+          background-color: #FFD2D2;
+          border: 1px solid #D8000C;
+          border-radius: 5px;
+          padding: 1rem;
+          margin: 1rem auto;
+          text-align: center;
+          display: none; /* Hidden by default */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>آزمون سبک یادگیری فلدر-سیلورمن</h1>
+    <form id="quizForm">
+      <div class="user-info">
+        <h2>اطلاعات (اختیاری)</h2>
+        <div class="form-group">
+          <label for="name">نام و نام خانوادگی</label>
+          <input type="text" id="name" name="name" placeholder="مثال: مریم رضایی">
         </div>
-      `;
-      container.appendChild(div);
-    });
+        <div class="form-group">
+          <label for="age">سن</label>
+          <input type="number" id="age" name="age" placeholder="مثال: ۲۱">
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber">شماره تلفن</label>
+          <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹">
+        </div>
+        <div class="form-group">
+          <label for="studentId">شماره دانشجویی</label>
+          <input type="text" id="studentId" name="studentId" placeholder="مثال: ۹۸۷۶۵۴۳۲۱">
+        </div>
+      </div>
+      
+      <div id="questions"></div>
+      <button type="submit" id="submitBtn">محاسبه سبک یادگیری من</button>
+    </form>
+    
+    <div id="result" class="result"></div>
+    <div id="errorMessage" class="error-message"></div>
 
-    const form = document.getElementById("quizForm");
-    const submitBtn = document.getElementById('submitBtn');
-    const resultDiv = document.getElementById('result');
-    const errorDiv = document.getElementById('errorMessage');
+    <div class="back-button" onclick="window.location.href='index.html'">
+      → بازگشت به صفحه اصلی
+    </div>
 
-    form.onsubmit = function(e) {
-      e.preventDefault();
+    <script>
+      const questions = [
+          { q: "۱) هنگامی مطلب را بهتر می فهمیم که:", a: "الف) آن را آزمایش می کنم.", b: "ب) درباره آن کاملاً فکر می کنم.", dim: "ACT-REF" },
+          { q: "۲) ترجیح می دهم:", a: "الف) واقع بین به نظر برسم.", b: "ب) مبتکر به نظر برسم.", dim: "SEN-INT" },
+          { q: "۳) وقتی به آنچه دیروز انجام داده ام فکر می کنم، بیشتر:", a: "الف) آن را به صورت تصویر به یاد می آورم.", b: "ب) آن را به صورت کلمات به یاد می آورم.", dim: "VIS-VRB" },
+          { q: "۴) معمولاً:", a: "الف) جزئیات موضوع را می فهمم، اما درباره ساختار کلی آن گیج می شوم.", b: "ب) ساختار کلی موضوع را می فهمم، اما درباره جزئیات آن گیج می شوم.", dim: "SEQ-GLO" },
+          { q: "۵) برای یادگیری هر چیز تازه:", a: "الف) صحبت کردن درباره آن به من کمک می کند.", b: "ب) فکر کردن درباره آن به من کمک می کند.", dim: "ACT-REF" },
+          { q: "۶) اگر معلم شوم، ترجیح می دهم درسی بدهم که:", a: "الف) با حقایق زندگی سروکار داشته باشد.", b: "ب) با عقاید و نظریه ها سروکار داشته باشد.", dim: "SEN-INT" },
+          { q: "۷) ترجیح می دهم مطالب جدید را از طریق:", a: "الف) تصاویر، جدولها و نقشه ها یاد بگیرم.", b: "ب) دستورالعملهای مکتوب یا اطلاعات شفاهی یاد بگیرم.", dim: "VIS-VRB" },
+          { q: "۸) وقتی:", a: "الف) همه اجزای مطلب را بفهمم، کل مطلب را می فهمم.", b: "ب) کل مطلب را بفهمم، همه اجزای آن را می فهمم.", dim: "SEQ-GLO" },
+          { q: "۹) در میان گروهی که مسئله دشواری را بررسی می کنند، من به احتمال زیاد:", a: "الف) وارد بحث می شوم و عقیده ام را بیان می کنم.", b: "ب) در گوشه ای می نشینم و گوش می دهم.", dim: "ACT-REF" },
+          { q: "۱۰) یادگیری:", a: "الف) واقعیات را آسان تر می دانم.", b: "ب) مفاهیم را آسان تر می دانم.", dim: "SEN-INT" },
+          { q: "۱۱) هنگام مطالعه کتابی که تصاویر و شکلهای بسیار زیادی دارد، به احتمال زیاد:", a: "الف) تصاویر و نمودارها را به دقت بررسی می کنم.", b: "ب) توجه خود را به نوشته های کتاب معطوف می کنم.", dim: "VIS-VRB" },
+          { q: "۱۲) هنگام حل مسائل ریاضی:", a: "الف) معمولاً مرحله به مرحله روی راه حلهایی که به جواب می رسند کار می کنم.", b: "ب) غالباً ابتدا راه حلها را بررسی می کنم و سپس سعی می کنم مراحلی که برای رسیدن به آنها لازم است بیابم.", dim: "SEQ-GLO" },
+          { q: "۱۳) وقتی در کلاسی شرکت می کنم:", a: "الف) معمولاً با بسیاری از دانش آموزان آشنا می شوم.", b: "ب) معمولاً با تعداد کمی از دانش آموزان آشنا می شوم.", dim: "ACT-REF" },
+          { q: "۱۴) در مطالعه مطالب واقعی، ترجیح می دهم مطالب:", a: "الف) چیزهای جدیدی به من بیاموزند یا به من چگونگی انجام دادن کارها را یاد بدهند.", b: "ب) ایده های جدیدی برای فکر کردن درباره آنها در اختیار من بگذراند.", dim: "SEN-INT" },
+          { q: "۱۵) معلمانی را دوست دارم که هنگام درس دادن:", a: "الف) جدولها و نمودارهای زیادی روی تخته می کشند.", b: "ب) زمان زیادی را صرف توضیح دادن می کنند.", dim: "VIS-VRB" },
+          { q: "۱۶) هنگام تحلیل داستان یا رمان:", a: "الف) به اتفاقات داستان فکر می کنم و می کوشم آنها را به منظور فهم موضوع اصلی داستان به یکدیگر مرتبط سازم.", b: "ب) چون وقتی که داستان را تمام می کنم فقط موضوع اصلی آن را به خاطر می آورم، باید به عقب برگردم و رابطه بین اتفاقهای داستان را پیدا کنم.", dim: "SEQ-GLO" },
+          { q: "۱۷) وقتی حل مسئله را شروع می کنم، به احتمال زیاد:", a: "الف) بلافاصله روی راه حل آن کار می کنم.", b: "ب) ابتدا سعی می کنم مسئله را کاملاً بفهمم.", dim: "ACT-REF" },
+          { q: "۱۸) بیشتر:", a: "الف) عقاید قطعی را ترجیح می دهم.", b: "ب) فرضیات را ترجیح می دهم.", dim: "SEN-INT" },
+          { q: "۱۹) آنچه را:", a: "الف) می بینم بهتر به یاد می آورم.", b: "ب) می شنوم بهتر به یاد می آورم.", dim: "VIS-VRB" },
+          { q: "۲۰) برای من خیلی مهم است که معلم:", a: "الف) مطالب را با نظم و ترتیب روشن ارائه دهد.", b: "ب) تصویری کلی از مطالب را ارائه دهد و آن را با موضوعات دیگر مرتبط سازد.", dim: "SEQ-GLO" },
+          { q: "۲۱) ترجیح می دهم:", a: "الف) در گروه مطالعه کنم.", b: "ب) به تنهایی مطالعه کنم.", dim: "ACT-REF" },
+          { q: "۲۲) بیشتر ترجیح می دهم:", a: "الف) درباره جزئیات کار دقیق باشم.", b: "ب) در چگونگی انجام دادن کار خلاق باشم.", dim: "SEN-INT" },
+          { q: "۲۳) برای پیدا کردن محلی ناآشنا:", a: "الف) استفاده از نقشه را ترجیح می دهم.", b: "ب) استفاده از آدرس مکتوب را ترجیح می دهم.", dim: "VIS-VRB" },
+          { q: "۲۴) مطالب را:", a: "الف) در مراحل نسبتاً منظم و با تلاش زیاد یاد می گیرم.", b: "ب) در ابتدا خوب نمی فهمم و کاملاً گیج می شوم، اما ناگهان آن را یاد می گیرم.", dim: "SEQ-GLO" },
+          { q: "۲۵) ترجیح می دهم ابتدا:", a: "الف) کارها را انجام دهم.", b: "ب) در باره چگونگی انجام دادن کارها فکر کنم.", dim: "ACT-REF" },
+          { q: "۲۶) وقتی برای سرگرمی مطالعه می کنم، نویسندگانی را ترجیح می دهم که:", a: "الف) به روشنی منظورشان را بیان می کنند.", b: "ب) مطالب را به روشهای جالب و خلاق بیان می کنند.", dim: "SEN-INT" },
+          { q: "۲۷) وقتی در کلاس تصویر یا شکلی می بینم، احتمال زیادی وجود دارد که:", a: "الف) تصویر یا شکل را به یاد بیاورم.", b: "ب) توضیحات معلم درباره تصویر یا شکل را به یاد بیاورم.", dim: "VIS-VRB" },
+          { q: "۲۸) هنگامی که با اطلاعات زیادی مواجه می شوم به احتمال زیاد:", a: "الف) به جزئیات توجه می کنم و اصل مطلب را از دست می دهم.", b: "ب) سعی می کنم، قبل از پرداختن به جزئیات، اصل مطلب را بفهمم.", dim: "SEQ-GLO" },
+          { q: "۲۹) یادآوری:", a: "الف) آنچه را انجام داده ام آسان تر می دانم.", b: "ب) آنچه را درباره اش زیاد فکر کرده ام، آسان تر می دانم.", dim: "ACT-REF" },
+          { q: "۳۰) وقتی باید کاری انجام دهم، ترجیح می دهم:", a: "الف) برای انجام دادن آن در یکی از روشهای موجود مهارت کسب کنم.", b: "ب) روشهای جدیدی ابداع کنم و به کار گیرم.", dim: "SEN-INT" },
+          { q: "۳۱) وقتی فردی متنی به من نشان می دهد:", a: "الف) شکلها و تصاویر آن را ترجیح می دهم.", b: "ب) خلاصه متن و نتایج آن را ترجیح می دهم.", dim: "VIS-VRB" },
+          { q: "۳۲) برای تدوین مقاله، به احتمال زیاد:", a: "الف) نگارش مقاله را از ابتدا شروع می کنم و با رعایت ترتیب بخشها ادامه می دهم.", b: "ب) بخشهای مختلف مقاله را بدون توجه به ترتیب آنها آماده و سپس مرتب می کنم.", dim: "SEQ-GLO" },
+          { q: "۳۳) وقتی باید با دیگران به صورت گروهی کار کنم، مایلم در آغاز:", a: "الف) هر یک از افراد گروه عقاید و نظرهایشان را مطرح کنند.", b: "ب) افراد عقاید خود را ابتدا به صورت انفرادی بررسی و سپس در گروه مطرح کنند.", dim: "ACT-REF" },
+          { q: "۳۴) به نظر من بالاترین تمجید آن است که فرد را:", a: "الف) معقول بدانیم.", b: "ب) دارای تخیل قوی بدانیم.", dim: "SEN-INT" },
+          { q: "۳۵) اگر افرادی را در میهمانی ملاقات کنم، احتمال زیادی وجود دارد که:", a: "الف) چهره آنها را به یاد بیاورم.", b: "ب) آنچه را درباره خودشان گفته اند به یاد بیاورم.", dim: "VIS-VRB" },
+          { q: "۳۶) وقتی موضوع جدیدی یاد می گیرم، ترجیح می دهم:", a: "الف) بر آن متمرکز شوم و تا آنجا که می توانم درباره آن مطالبی یاد بگیرم.", b: "ب) آن موضوع را با موضعهای دیگر مرتبط کنم.", dim: "SEQ-GLO" },
+          { q: "۳۷) به نظر دیگران، من:", a: "الف) خوش برخورد به شمار می آیم.", b: "ب) خوددار به شمار می آیم.", dim: "ACT-REF" },
+          { q: "۳۸) دروسی را ترجیح می دهم که بر:", a: "الف) موضوعات عینی مانند واقعیات و اطلاعات متمرکز باشند.", b: "ب) موضوعات انتزاعی مانند مفاهیم و نظریه ها متمرکز باشند.", dim: "SEN-INT" },
+          { q: "۳۹) برای سرگرمی، ترجیح می دهم:", a: "الف) تلویزیون تماشا کنم.", b: "ب) کتاب بخوانم.", dim: "VIS-VRB" },
+          { q: "۴۰) بعضی از معلمان درس خود را با خلاصه ای از موضوع مورد بحث شروع می کنند، این خلاصه ها برای من:", a: "الف) کمی مفید هستند.", b: "ب) بسیار مفید هستند.", dim: "SEQ-GLO" },
+          { q: "۴۱) وقتی تکلیف به صورت گروهی انجام می شود، اختصاص یک نمره برای کل گروه:", a: "الف) درست است.", b: "ب) درست نیست.", dim: "ACT-REF" },
+          { q: "۴۲) در محاسبات طولانی، تمایل به:", a: "الف) مرور تمامی مراحل و کنترل دقیق محاسبات دارم.", b: "ب) مرور تمامی مراحل و کنترل دقیق محاسبات ندارم و باید خود را مجبور به انجام دادن آن کنم.", dim: "SEN-INT" },
+          { q: "۴۳) تجسم مکانهایی که در آنها بوده ام برای من:", a: "الف) نسبتاً آسان، کامل و دقیق است.", b: "ب) دشوار، بدون جزئیات و بی دقت است.", dim: "VIS-VRB" },
+          { q: "۴۴) هنگام حل مسائل به صورت گروهی، بیشتر مایلم:", a: "الف) در مورد مراحل حل مسئله فکر کنم.", b: "ب) درباره نتایج و کاربردهای احتمالی راه حلها فکر کنم.", dim: "SEQ-GLO" }
+      ];
 
-      submitBtn.disabled = true;
-      submitBtn.innerText = 'در حال ارسال...';
-      resultDiv.style.display = 'none';
-      errorDiv.style.display = 'none';
-
-      const userInfo = {
-        Name: document.getElementById('name').value,
-        Age: document.getElementById('age').value,
-        PhoneNumber: document.getElementById('phoneNumber').value,
-        StudentID: document.getElementById('studentId').value,
+      const learningStyleDescriptions = {
+          'Active': {
+              title: 'فعال (Active)',
+              description: 'شما از طریق «انجام دادن»، مشارکت فعال در بحث‌ها و به‌کارگیری مفاهیم، بهترین یادگیری را تجربه می‌کنید.',
+              strategies: [
+                  'در گروه‌های مطالعه شرکت کنید و مفاهیم را برای دیگران توضیح دهید.',
+                  'برای هر موضوع، مثال‌های عملی و کاربردی پیدا کنید.',
+                  'هنگام مطالعه، به جای نشستن طولانی، در فواصل کوتاه فعالیت فیزیکی داشته باشید.'
+              ]
+          },
+          'Reflective': {
+              title: 'تأمل‌گرا (Reflective)',
+              description: 'شما ترجیح می‌دهید ابتدا اطلاعات را در ذهن خود پردازش کرده و درباره‌ی آن عمیقاً فکر کنید.',
+              strategies: [
+                  'پس از هر کلاس یا جلسه مطالعه، زمانی را به مرور و فکر کردن به مطالب اختصاص دهید.',
+                  'خلاصه‌نویسی از آموخته‌هایتان به درک عمیق‌تر کمک می‌کند.',
+                  'قبل از شروع حل مسئله، تمام جوانب آن را با دقت بررسی کنید.'
+              ]
+          },
+          'Sensing': {
+              title: 'حسی (Sensing)',
+              description: 'شما به اطلاعات ملموس، واقعیت‌ها و رویه‌های اثبات‌شده علاقه‌مند هستید و به جزئیات توجه زیادی دارید.',
+              strategies: [
+                  'از استاد یا منابع درسی، مثال‌های واقعی و کاربردی درخواست کنید.',
+                  'مفاهیم درسی را به تجربیات عملی خود مرتبط سازید.',
+                  'در کارهای آزمایشگاهی و عملی مهارت بالایی دارید؛ از این فرصت‌ها استفاده کنید.'
+              ]
+          },
+          'Intuitive': {
+              title: 'شهودی (Intuitive)',
+              description: 'شما به کشف روابط، ایده‌های نو و مفاهیم انتزاعی علاقه‌مندید و از کارهای تکراری و حفظ‌کردنی بیزارید.',
+              strategies: [
+                  'به دنبال درک تصویر کلی و ارتباط بین مفاهیم مختلف باشید.',
+                  'از منابعی استفاده کنید که نظریه‌ها و ایده‌های اصلی را توضیح می‌دهند.',
+                  'مراقب باشید که در آزمون‌ها به دلیل بی‌توجهی به جزئیات، امتیاز از دست ندهید.'
+              ]
+          },
+          'Visual': {
+              title: 'دیداری (Visual)',
+              description: 'شما اطلاعاتی را که به صورت بصری ارائه می‌شوند (مانند نمودار، دیاگرام و تصویر) بهتر به خاطر می‌سپارید.',
+              strategies: [
+                  'اطلاعات متنی را به صورت نقشه‌های ذهنی (Mind Map)، فلوچارت و جدول تبدیل کنید.',
+                  'از رنگ‌های مختلف برای هایلایت کردن و دسته‌بندی مطالب استفاده کنید.',
+                  'ویدیوهای آموزشی و منابع تصویری را جایگزین منابع صرفاً متنی کنید.'
+              ]
+          },
+          'Verbal': {
+              title: 'کلامی (Verbal)',
+              description: 'شما از طریق خواندن، نوشتن و توضیحات گفتاری (شنیداری و بیانی) بهترین یادگیری را دارید.',
+              strategies: [
+                  'مطالب را با صدای بلند برای خود یا دیگران تکرار کنید.',
+                  'در بحث‌های کلاسی و گروه‌های مطالعه فعالانه شرکت کنید.',
+                  'خلاصه‌نویسی و بازنویسی مفاهیم با کلمات خودتان بسیار مؤثر است.'
+              ]
+          },
+          'Sequential': {
+              title: 'توالی‌گرا (Sequential)',
+              description: 'شما اطلاعات را به صورت مرحله به مرحله و در یک توالی منطقی و منظم بهتر درک می‌کنید.',
+              strategies: [
+                  'برای مطالب درسی، یک طرح کلی و فهرست‌وار (Outline) تهیه کنید.',
+                  'مطمئن شوید که هر مرحله را به خوبی یاد گرفته‌اید و سپس به مرحله بعد بروید.',
+                  'از معلم بخواهید که ارتباط منطقی بین بخش‌های مختلف درس را توضیح دهد.'
+              ]
+          },
+          'Global': {
+              title: 'کلی‌نگر (Global)',
+              description: 'شما نیاز دارید ابتدا تصویر کلی و هدف نهایی را ببینید. یادگیری شما اغلب به صورت جهشی و ناگهانی اتفاق می‌افتد.',
+              strategies: [
+                  'قبل از خواندن دقیق یک فصل، آن را به سرعت ورق بزنید تا یک دید کلی به دست آورید.',
+                  'سعی کنید مطالب جدید را به موضوعاتی که از قبل می‌دانید، مرتبط سازید.',
+                  'اگر در ابتدا احساس سردرگمی کردید، نگران نشوید. به زودی تصویر کلی برایتان روشن خواهد شد.'
+              ]
+          }
       };
 
-      const scores = { "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0 };
-      const individualAnswers = {};
-      
+      const container = document.getElementById("questions");
       questions.forEach((q, i) => {
-        const val = document.querySelector(`input[name='q${i}']:checked`).value;
-        scores[q.dim] += (val === 'a' ? 1 : -1);
-        const questionKey = `Q${i + 1}-${q.dim}`;
-        individualAnswers[questionKey] = val;
-      });
-
-      const calculateStyleAndPercentage = (score, styleA, styleB) => {
-        const totalQuestionsPerDimension = 11;
-        if (score === 0) return "متعادل (Balanced)";
-        const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
-        const dominantStyle = score > 0 ? styleA : styleB;
-        return `${dominantStyle} (${percentage}%)`;
-      };
-
-      const finalResults = {
-        Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأمل‌گرا (Reflective)"),
-        Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
-        Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
-        Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
-      };
-      
-      const getStyleDescription = (score, styleA, styleB) => {
-        const styleData = score >= 0 ? learningStyleDescriptions[styleA] : learningStyleDescriptions[styleB];
-        let strategiesHtml = '<ul>';
-        styleData.strategies.forEach(s => { strategiesHtml += `<li>${s}</li>`; });
-        strategiesHtml += '</ul>';
-        return `
-            <div class="style-description">
-                <h4>${styleData.title}</h4>
-                <p>${styleData.description}</p>
-                <p><strong>راهبردهای مطالعه پیشنهادی:</strong></p>
-                ${strategiesHtml}
-            </div>
-        `;
-      };
-      
-      let descriptionsHtml = '<div class="result-details"><h3>توضیحات سبک یادگیری شما</h3>';
-      descriptionsHtml += getStyleDescription(scores["ACT-REF"], 'Active', 'Reflective');
-      descriptionsHtml += getStyleDescription(scores["SEN-INT"], 'Sensing', 'Intuitive');
-      descriptionsHtml += getStyleDescription(scores["VIS-VRB"], 'Visual', 'Verbal');
-      descriptionsHtml += getStyleDescription(scores["SEQ-GLO"], 'Sequential', 'Global');
-      descriptionsHtml += '</div>';
-
-      // *** MODIFICATION: Changed timestamp to 'en-US' locale ***
-      const timestamp = new Date().toLocaleString('en-US');
-      const dataToSend = { 
-        Timestamp: timestamp,
-        ...userInfo, 
-        ...individualAnswers, 
-        ...finalResults 
-      };
-
-      fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataToSend)
-      }).then(() => {
-        const resultSummary = `
-          <div class="result-summary">
-            <h3>نتایج آزمون</h3>
-            <p><strong>بعد پردازش (چگونه اطلاعات را پردازش می‌کنید):</strong> ${finalResults.Result_ACT_REF}</p>
-            <p><strong>بعد دریافت (چه نوع اطلاعاتی را ترجیح می‌دهید):</strong> ${finalResults.Result_SEN_INT}</p>
-            <p><strong>بعد ورودی (بهترین کانال دریافت اطلاعات):</strong> ${finalResults.Result_VIS_VRB}</p>
-            <p><strong>بعد فهم (چگونه اطلاعات را به درک تبدیل می‌کنید):</strong> ${finalResults.Result_SEQ_GLO}</p>
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `
+          <h3>${q.q}</h3>
+          <div class="options">
+            <label><input type="radio" name="q${i}" value="a" required> ${q.a}</label>
+            <label><input type="radio" name="q${i}" value="b" required> ${q.b}</label>
           </div>
         `;
-        
-        resultDiv.innerHTML = resultSummary + '<hr>' + descriptionsHtml;
-        resultDiv.style.display = 'block';
-        submitBtn.innerText = 'ارسال انجام شد';
-        
-      }).catch(err => {
-        errorDiv.innerText = "خطایی در ارسال اطلاعات به Google Sheet رخ داد. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.";
-        errorDiv.style.display = 'block';
-        console.error(err);
-        submitBtn.disabled = false;
-        submitBtn.innerText = 'محاسبه سبک یادگیری من';
+        container.appendChild(div);
       });
-    };
-  </script>
-</body>
-</html>
+
+      const form = document.getElementById("quizForm");
+      const submitBtn = document.getElementById('submitBtn');
+      const resultDiv = document.getElementById('result');
+      const errorDiv = document.getElementById('errorMessage');
+
+      form.onsubmit = function(e) {
+        e.preventDefault();
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'در حال ارسال...';
+        resultDiv.style.display = 'none';
+        errorDiv.style.display = 'none';
+
+        const userInfo = {
+          Name: document.getElementById('name').value,
+          Age: document.getElementById('age').value,
+          PhoneNumber: document.getElementById('phoneNumber').value,
+          StudentID: document.getElementById('studentId').value,
+        };
+
+        const scores = { "ACT-REF": 0, "SEN-INT": 0, "VIS-VRB": 0, "SEQ-GLO": 0 };
+        const individualAnswers = {};
+        
+        questions.forEach((q, i) => {
+          const val = document.querySelector(`input[name='q${i}']:checked`).value;
+          scores[q.dim] += (val === 'a' ? 1 : -1);
+          const questionKey = `Q${i + 1}-${q.dim}`;
+          individualAnswers[questionKey] = val;
+        });
+
+        const calculateStyleAndPercentage = (score, styleA, styleB) => {
+          const totalQuestionsPerDimension = 11;
+          if (score === 0) return "متعادل (Balanced)";
+          const percentage = Math.round((Math.abs(score) / totalQuestionsPerDimension) * 100);
+          const dominantStyle = score > 0 ? styleA : styleB;
+          return `${dominantStyle} (${percentage}%)`;
+        };
+
+        const finalResults = {
+          Result_ACT_REF: calculateStyleAndPercentage(scores["ACT-REF"], "فعال (Active)", "تأمل‌گرا (Reflective)"),
+          Result_SEN_INT: calculateStyleAndPercentage(scores["SEN-INT"], "حسی (Sensing)", "شهودی (Intuitive)"),
+          Result_VIS_VRB: calculateStyleAndPercentage(scores["VIS-VRB"], "دیداری (Visual)", "کلامی (Verbal)"),
+          Result_SEQ_GLO: calculateStyleAndPercentage(scores["SEQ-GLO"], "توالی‌گرا (Sequential)", "کلی‌نگر (Global)")
+        };
+        
+        const getStyleDescription = (score, styleA, styleB) => {
+          const styleData = score >= 0 ? learningStyleDescriptions[styleA] : learningStyleDescriptions[styleB];
+          let strategiesHtml = '<ul>';
+          styleData.strategies.forEach(s => { strategiesHtml += `<li>${s}</li>`; });
+          strategiesHtml += '</ul>';
+          return `
+              <div class="style-description">
+                  <h4>${styleData.title}</h4>
+                  <p>${styleData.description}</p>
+                  <p><strong>راهبردهای مطالعه پیشنهادی:</strong></p>
+                  ${strategiesHtml}
+              </div>
+          `;
+        };
+        
+        let descriptionsHtml = '<div class="result-details"><h3>توضیحات سبک یادگیری شما</h3>';
+        descriptionsHtml += getStyleDescription(scores["ACT-REF"], 'Active', 'Reflective');
+        descriptionsHtml += getStyleDescription(scores["SEN-INT"], 'Sensing', 'Intuitive');
+        descriptionsHtml += getStyleDescription(scores["VIS-VRB"], 'Visual', 'Verbal');
+        descriptionsHtml += getStyleDescription(scores["SEQ-GLO"], 'Sequential', 'Global');
+        descriptionsHtml += '</div>';
+
+        // *** MODIFICATION: Changed timestamp to 'en-US' locale ***
+        const timestamp = new Date().toLocaleString('en-US');
+        const dataToSend = { 
+          Timestamp: timestamp,
+          ...userInfo, 
+          ...individualAnswers, 
+          ...finalResults 
+        };
+
+        fetch("https://script.google.com/macros/s/AKfycbxFwNMP0a-r96encgGGSweBkcRnKeEmIpTcdUYHojz3UoirL50lEXjVMpC4vCHHBX0yLA/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataToSend)
+        }).then(() => {
+          const resultSummary = `
+            <div class="result-summary">
+              <h3>نتایج آزمون</h3>
+              <p><strong>بعد پردازش (چگونه اطلاعات را پردازش می‌کنید):</strong> ${finalResults.Result_ACT_REF}</p>
+              <p><strong>بعد دریافت (چه نوع اطلاعاتی را ترجیح می‌دهید):</strong> ${finalResults.Result_SEN_INT}</p>
+              <p><strong>بعد ورودی (بهترین کانال دریافت اطلاعات):</strong> ${finalResults.Result_VIS_VRB}</p>
+              <p><strong>بعد فهم (چگونه اطلاعات را به درک تبدیل می‌کنید):</strong> ${finalResults.Result_SEQ_GLO}</p>
+            </div>
+          `;
+          
+          resultDiv.innerHTML = resultSummary + '<hr>' + descriptionsHtml;
+          resultDiv.style.display = 'block';
+          submitBtn.innerText = 'ارسال انجام شد';
+          
+        }).catch(err => {
+          errorDiv.innerText = "خطایی در ارسال اطلاعات به Google Sheet رخ داد. لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.";
+          errorDiv.style.display = 'block';
+          console.error(err);
+          submitBtn.disabled = false;
+          submitBtn.innerText = 'محاسبه سبک یادگیری من';
+        });
+      };
+    </script>
+  </body>
+  </html>
